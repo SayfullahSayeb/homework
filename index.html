@@ -3,35 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>হোমওয়ার্ক ম্যানেজমেন্ট সিস্টেম</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <meta name="description" content="Homework Tracker Application">
+    <title>হোমওয়ার্ক ট্র্যাকার</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4361ee">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.1/purify.min.js"></script>
 </head>
 <body>
-    <!-- Theme Toggle Button -->
-    <button class="theme-toggle" onclick="toggleTheme()">
+    <!-- Offline Status -->
+    <div id="offlineAlert" class="offline-alert hidden">
+        <i class="fas fa-wifi-slash"></i>
+        <span>অফলাইন মোড</span>
+    </div>
+
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
         <i class="fas fa-moon"></i>
     </button>
 
-    <!-- User Panel with Current Time -->
-    <div id="userPanel">
-        <h2>হোমওয়ার্ক ট্র্যাকার</h2>
-        <div class="user-info">
-            <p><i class="fas fa-user"></i> ব্যবহারকারী: <span id="currentUser">SayfullahSayeb</span></p>
-            <p><i class="fas fa-clock"></i> বর্তমান সময়: <span id="currentDateTime"></span></p>
+    <!-- User Panel -->
+    <header id="userPanel">
+        <div class="container">
+            <h1 class="app-title">হোমওয়ার্ক ট্র্যাকার</h1>
+            <div class="user-info">
+                <p class="user-detail">
+                    <i class="fas fa-user"></i>
+                    <span>ব্যবহারকারী:</span>
+                    <span id="currentUser">SayfullahSayeb</span>
+                </p>
+                <p class="time-detail">
+                    <i class="fas fa-clock"></i>
+                    <span>বর্তমান সময়:</span>
+                    <span id="currentDateTime"></span>
+                </p>
+            </div>
         </div>
-    </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Today's Tasks Section -->
+        <section id="todaysTasks" class="task-section">
+            <div id="todaysTasksList" class="task-list"></div>
+        </section>
+
+        <!-- Unfinished Tasks Section -->
+        <section id="unfinishedTasks" class="task-section">
+            <div class="date-filter-container">
+                <div class="filter-group">
+                    <label for="unfinishedFilter">
+                        <i class="fas fa-filter"></i> তারিখ অনুযায়ী ফিল্টার:
+                    </label>
+                    <div class="filter-controls">
+                        <input type="date" id="unfinishedFilter" 
+                               onchange="filterByDate(this.value, 'unfinished')"
+                               min="2025-01-01" max="2025-12-31">
+                        <button class="btn btn-clear" onclick="clearDateFilter('unfinishedFilter')"
+                                aria-label="Clear filter">
+                            <i class="fas fa-times"></i>
+                            <span>ফিল্টার মুছুন</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="upcomingTasksList" class="task-list"></div>
+        </section>
+
+        <!-- Completed Tasks Section -->
+        <section id="completedTasks" class="task-section">
+            <div class="date-filter-container">
+                <div class="filter-group">
+                    <label for="completedFilter">
+                        <i class="fas fa-filter"></i> তারিখ অনুযায়ী ফিল্টার:
+                    </label>
+                    <div class="filter-controls">
+                        <input type="date" id="completedFilter" 
+                               onchange="filterByDate(this.value, 'completed')"
+                               min="2025-01-01" max="2025-12-31">
+                        <button class="btn btn-clear" onclick="clearDateFilter('completedFilter')"
+                                aria-label="Clear filter">
+                            <i class="fas fa-times"></i>
+                            <span>ফিল্টার মুছুন</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="completedTasksList" class="task-list"></div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings" class="task-section">
+            <div class="settings-container">
+                <!-- Username Change -->
+                <div class="settings-group">
+                    <h2 class="settings-title">ব্যবহারকারীর নাম পরিবর্তন</h2>
+                    <div class="settings-content">
+                        <input type="text" id="changeUsername" class="form-control" 
+                               placeholder="নতুন নাম লিখুন">
+                        <button onclick="changeUsername()" class="btn btn-primary">
+                            <i class="fas fa-save"></i>
+                            <span>সংরক্ষণ করুন</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Subject Management -->
+                <div class="settings-group">
+                    <h2 class="settings-title">বিষয় ব্যবস্থাপনা</h2>
+                    <div class="subjects-management">
+                        <table class="subjects-table">
+                            <thead>
+                                <tr>
+                                    <th>বিষয়</th>
+                                    <th>রং</th>
+                                    <th>অ্যাকশন</th>
+                                </tr>
+                            </thead>
+                            <tbody id="subjectsTableBody"></tbody>
+                        </table>
+                        <button onclick="openAddSubjectModal()" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            <span>নতুন বিষয় যোগ করুন</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Backup & Restore -->
+                <div class="settings-group">
+                    <h2 class="settings-title">ব্যাকআপ এবং পুনরুদ্ধার</h2>
+                    <div class="backup-controls">
+                        <button onclick="backupData()" class="btn btn-primary">
+                            <i class="fas fa-copy"></i>
+                            <span>ব্যাকআপ কপি করুন</span>
+                        </button>
+                        <button onclick="downloadBackup()" class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            <span>ব্যাকআপ ডাউনলোড করুন</span>
+                        </button>
+                    </div>
+                    <div class="restore-section">
+                        <h3>ডাটা পুনরুদ্ধার</h3>
+                        <textarea id="restoreData" class="form-control"
+                                  placeholder="এখানে ব্যাকআপ ডাটা পেস্ট করুন"></textarea>
+                        <div class="restore-controls">
+                            <button onclick="restoreFromText()" class="btn btn-primary">
+                                <i class="fas fa-upload"></i>
+                                <span>টেক্সট থেকে পুনরুদ্ধার</span>
+                            </button>
+                            <input type="file" id="restoreFile" accept=".json" class="hidden">
+                            <button onclick="document.getElementById('restoreFile').click()" 
+                                    class="btn btn-primary">
+                                <i class="fas fa-file-upload"></i>
+                                <span>ফাইল থেকে পুনরুদ্ধার</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Add Task Button -->
-    <div class="add-task-btn" onclick="openModal()">
+    <button class="add-task-btn" onclick="openModal()" aria-label="Add new task">
         <i class="fas fa-plus"></i>
-    </div>
+    </button>
+
+    <!-- Bottom Navigation -->
+    <nav class="mobile-nav">
+        <a href="#" class="nav-item active-nav" onclick="showSection('todaysTasks', this)">
+            <i class="fas fa-calendar-day"></i>
+            <span>আজকের (0)</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('unfinishedTasks', this)">
+            <i class="fas fa-clock"></i>
+            <span>অসম্পূর্ণ (0)</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('completedTasks', this)">
+            <i class="fas fa-check-circle"></i>
+            <span>সম্পন্ন (0)</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('settings', this)">
+            <i class="fas fa-cog"></i>
+            <span>সেটিংস</span>
+        </a>
+    </nav>
 
     <!-- Add Task Modal -->
     <div id="addTaskModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeModal()">&times;</span>
-            <h3><i class="fas fa-plus-circle"></i> নতুন কাজ যোগ করুন</h3>
+            <div class="modal-header">
+                <h2>নতুন কাজ যোগ করুন</h2>
+                <button class="close-btn" onclick="closeModal()" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
             <form id="addTaskForm" onsubmit="addTask(event)">
                 <div class="form-group">
                     <label for="subject">বিষয়</label>
@@ -42,14 +209,16 @@
                         <option value="english">ইংরেজি</option>
                         <option value="custom">কাস্টম বিষয়...</option>
                     </select>
-                    <div id="customSubjectDiv" style="display: none;" class="custom-subject-input">
-                        <input type="text" id="customSubject" placeholder="কাস্টম বিষয়ের নাম লিখুন">
+                    <div id="customSubjectDiv" class="custom-subject-input" style="display: none;">
+                        <input type="text" id="customSubject" 
+                               placeholder="কাস্টম বিষয়ের নাম লিখুন">
                         <div class="color-picker">
                             <label>বিষয়ের রং বাছাই করুন:</label>
                             <input type="color" id="subjectColor" value="#4ecdc4">
                         </div>
                         <button type="button" class="btn btn-sm" onclick="addCustomSubject()">
-                            <i class="fas fa-plus"></i> নতুন বিষয় যোগ করুন
+                            <i class="fas fa-plus"></i>
+                            <span>নতুন বিষয় যোগ করুন</span>
                         </button>
                     </div>
                 </div>
@@ -59,7 +228,8 @@
                 </div>
                 <div class="form-group">
                     <label for="description">বিবরণ</label>
-                    <textarea id="description" rows="3" placeholder="বিস্তারিত বিবরণ লিখুন"></textarea>
+                    <textarea id="description" rows="3" 
+                              placeholder="বিস্তারিত বিবরণ লিখুন"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="priority">অগ্রাধিকার</label>
@@ -69,9 +239,12 @@
                         <option value="low">নিম্ন</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-plus"></i> যোগ করুন
-                </button>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        <span>যোগ করুন</span>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
@@ -79,10 +252,15 @@
     <!-- Edit Task Modal -->
     <div id="editTaskModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeEditModal()">&times;</span>
-            <h3><i class="fas fa-edit"></i> কাজ সম্পাদনা করুন</h3>
+            <div class="modal-header">
+                <h2>কাজ সম্পাদনা করুন</h2>
+                <button class="close-btn" onclick="closeEditModal()" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
             <form id="editTaskForm" onsubmit="updateTask(event)">
                 <input type="hidden" id="editTaskId">
+                <!-- Similar structure as add task form -->
                 <div class="form-group">
                     <label for="editSubject">বিষয়</label>
                     <select id="editSubject" onchange="handleSubjectSelect(this, 'edit')" required>
@@ -92,14 +270,16 @@
                         <option value="english">ইংরেজি</option>
                         <option value="custom">কাস্টম বিষয়...</option>
                     </select>
-                    <div id="editCustomSubjectDiv" style="display: none;" class="custom-subject-input">
-                        <input type="text" id="editCustomSubject" placeholder="কাস্টম বিষয়ের নাম লিখুন">
+                    <div id="editCustomSubjectDiv" class="custom-subject-input" style="display: none;">
+                        <input type="text" id="editCustomSubject" 
+                               placeholder="কাস্টম বিষয়ের নাম লিখুন">
                         <div class="color-picker">
                             <label>বিষয়ের রং বাছাই করুন:</label>
                             <input type="color" id="editSubjectColor" value="#4ecdc4">
                         </div>
                         <button type="button" class="btn btn-sm" onclick="addCustomSubject('edit')">
-                            <i class="fas fa-plus"></i> নতুন বিষয় যোগ করুন
+                            <i class="fas fa-plus"></i>
+                            <span>নতুন বিষয় যোগ করুন</span>
                         </button>
                     </div>
                 </div>
@@ -109,7 +289,8 @@
                 </div>
                 <div class="form-group">
                     <label for="editDescription">বিবরণ</label>
-                    <textarea id="editDescription" rows="3" placeholder="বিস্তারিত বিবরণ লিখুন"></textarea>
+                    <textarea id="editDescription" rows="3" 
+                              placeholder="বিস্তারিত বিবরণ লিখুন"></textarea>
                 </div>
                 <div class="form-group">
                     <label for="editPriority">অগ্রাধিকার</label>
@@ -119,123 +300,87 @@
                         <option value="low">নিম্ন</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> আপডেট করুন
-                </button>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        <span>আপডেট করুন</span>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 
-    <div id="homeworkContainer">
-        <!-- Today's Tasks Section -->
-        <div id="todaysTasks" class="task-section">
-            <h3><i class="fas fa-calendar-day"></i> আজকের কাজ</h3>
-            <div id="todaysTasksList" class="task-list"></div>
+<!-- Manage Subject Modal -->
+<div id="manageSubjectModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>বিষয় ব্যবস্থাপনা</h2>
+            <button class="close-btn" onclick="closeManageSubjectModal()" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
-
-        <!-- Unfinished Tasks Section -->
-        <div id="upcomingTasks" class="task-section">
-            <h3><i class="fas fa-clock"></i> অসম্পূর্ণ কাজ</h3>
-            <div class="date-filter-container">
-                <label for="unfinishedDateFilter">
-                    <i class="fas fa-filter"></i> তারিখ অনুযায়ী ফিল্টার:
-                </label>
-                <input type="date" id="unfinishedDateFilter" class="date-filter">
-                <button onclick="clearDateFilter('unfinishedDateFilter')" class="btn btn-clear">
-                    <i class="fas fa-times"></i> ফিল্টার মুছুন
-                </button>
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="manageSubjectName">বিষয়ের নাম</label>
+                <input type="text" id="manageSubjectName" class="form-control" 
+                       placeholder="বিষয়ের নাম লিখুন" required>
             </div>
-            <div id="upcomingTasksList" class="task-list"></div>
-        </div>
-
-        <!-- Completed Tasks Section -->
-        <div id="completedTasks" class="task-section">
-            <h3><i class="fas fa-check-double"></i> সম্পন্ন কাজ</h3>
-            <div class="date-filter-container">
-                <label for="completedDateFilter">
-                    <i class="fas fa-filter"></i> তারিখ অনুযায়ী ফিল্টার:
-                </label>
-                <input type="date" id="completedDateFilter" class="date-filter">
-                <button onclick="clearDateFilter('completedDateFilter')" class="btn btn-clear">
-                    <i class="fas fa-times"></i> ফিল্টার মুছুন
-                </button>
-            </div>
-            <div id="completedTasksList" class="task-list"></div>
-        </div>
-
-        <!-- Settings Section -->
-        <div id="settings" class="task-section">
-            <h3><i class="fas fa-cog"></i> সেটিংস</h3>
-            <div class="settings-container">
-                <!-- Username Settings -->
-                <div class="form-group">
-                    <h4><i class="fas fa-user-edit"></i> ব্যবহারকারীর নাম পরিবর্তন</h4>
-                    <input type="text" id="changeUsername" class="form-control" placeholder="নতুন ব্যবহারকারীর নাম">
-                    <button onclick="changeUsername()" class="btn btn-primary">
-                        <i class="fas fa-save"></i> সংরক্ষণ করুন
-                    </button>
-                </div>
-
-                <!-- Manage Custom Subjects -->
-                <div class="form-group">
-                    <h4><i class="fas fa-book"></i> কাস্টম বিষয় ব্যবস্থাপনা</h4>
-                    <div id="customSubjectsList"></div>
-                </div>
-
-                <!-- Backup Settings -->
-                <div class="form-group">
-                    <h4><i class="fas fa-download"></i> ব্যাকআপ এবং পুনরুদ্ধার</h4>
-                    <div class="backup-actions">
-                        <button onclick="backupData()" class="btn btn-primary">
-                            <i class="fas fa-copy"></i> ব্যাকআপ কপি করুন
-                        </button>
-                        <button onclick="downloadBackup()" class="btn btn-primary">
-                            <i class="fas fa-download"></i> ব্যাকআপ ডাউনলোড করুন
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Restore Settings -->
-                <div class="form-group">
-                    <h4><i class="fas fa-upload"></i> ডাটা পুনরুদ্ধার</h4>
-                    <textarea id="restoreData" class="form-control" rows="4" 
-                        placeholder="এখানে ব্যাকআপ ডাটা পেস্ট করুন"></textarea>
-                    <div class="restore-actions">
-                        <button onclick="restoreFromText()" class="btn btn-primary">
-                            <i class="fas fa-paste"></i> টেক্সট থেকে পুনরুদ্ধার
-                        </button>
-                        <div class="file-upload">
-                            <input type="file" id="restoreFile" accept=".json" style="display: none;">
-                            <button onclick="document.getElementById('restoreFile').click()" class="btn btn-primary">
-                                <i class="fas fa-file-upload"></i> ফাইল থেকে পুনরুদ্ধার
-                            </button>
-                        </div>
-                    </div>
+            <div class="form-group">
+                <label for="manageSubjectColor">বিষয়ের রং</label>
+                <div class="color-input-group">
+                    <input type="color" id="manageSubjectColor" value="#4ecdc4">
+                    <span class="color-preview"></span>
                 </div>
             </div>
+            <input type="hidden" id="manageSubjectId">
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeManageSubjectModal()" class="btn btn-secondary">
+                <i class="fas fa-times"></i>
+                <span>বাতিল করুন</span>
+            </button>
+            <button onclick="saveSubject()" class="btn btn-primary">
+                <i class="fas fa-save"></i>
+                <span>সংরক্ষণ করুন</span>
+            </button>
         </div>
     </div>
+</div>
 
-    <!-- Mobile Navigation Bar -->
-    <nav class="mobile-nav">
-        <a href="#" class="nav-item active-nav" onclick="showSection('todaysTasks', this)">
-            <i class="fas fa-tasks"></i>
-            <span>আজকের</span>
-        </a>
-        <a href="#" class="nav-item" onclick="showSection('upcomingTasks', this)">
-            <i class="fas fa-calendar"></i>
-            <span>অসম্পূর্ণ</span>
-        </a>
-        <a href="#" class="nav-item" onclick="showSection('completedTasks', this)">
-            <i class="fas fa-check-circle"></i>
-            <span>সম্পন্ন</span>
-        </a>
-        <a href="#" class="nav-item" onclick="showSection('settings', this)">
-            <i class="fas fa-cog"></i>
-            <span>সেটিংস</span>
-        </a>
-    </nav>
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmModal" class="modal">
+    <div class="modal-content modal-sm">
+        <div class="modal-header">
+            <h2>নিশ্চিতকরণ</h2>
+            <button class="close-btn" onclick="closeDeleteConfirmation()" aria-label="Close modal">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p class="confirm-message">আপনি কি নিশ্চিত যে আপনি এই আইটেমটি মুছে ফেলতে চান?</p>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeDeleteConfirmation()" class="btn btn-secondary">
+                <i class="fas fa-times"></i>
+                <span>না</span>
+            </button>
+            <button id="confirmDeleteBtn" class="btn btn-danger">
+                <i class="fas fa-trash"></i>
+                <span>হ্যাঁ, মুছে ফেলুন</span>
+            </button>
+        </div>
+    </div>
+</div>
 
-    <script src="app.js"></script>
+<!-- Toast Container -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- Scripts -->
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js');
+    }
+</script>
+<script src="app.js"></script>
 </body>
 </html>

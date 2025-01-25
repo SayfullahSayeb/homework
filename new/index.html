@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>হোমওয়ার্ক ম্যানেজমেন্ট সিস্টেম</title>
+    <style>
+        body {
+            font-family: 'SolaimanLipi', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subject {
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .math { background-color: #ff6b6b; }
+        .bangla { background-color: #4ecdc4; }
+        .english { background-color: #45b7d1; }
+
+        .status-pending {
+            background-color: #ffd93d;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .status-completed {
+            background-color: #6bcb77;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: white;
+        }
+
+        #userPanel {
+            background-color: #4b6584;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        #homeworkContainer {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #todaysTasks, #upcomingTasks, #completedTasks {
+            background-color: #fff;
+            border-left: 5px solid #4b6584;
+        }
+
+        #upcomingTasks { border-color: #778ca3; }
+        #completedTasks { border-color: #6bcb77; }
+
+        .notes {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .add-task {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .add-task input, .add-task select, .add-task button {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .add-task button {
+            background-color: #4b6584;
+            color: white;
+            cursor: pointer;
+        }
+
+        .add-task button:hover {
+            background-color: #3a4f6a;
+        }
+
+        .subject-custom {
+            display: inline-block;
+            padding: 5px 10px;
+            color: white;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="userPanel">
+        <h2>হোমওয়ার্ক ট্র্যাকার</h2>
+    </div>
+
+    <div id="homeworkContainer">
+        <div class="add-task">
+            <input type="text" id="taskSubject" placeholder="বিষয়" required>
+            <input type="color" id="subjectColor" title="Choose Subject Color">
+            <input type="text" id="taskTitle" placeholder="কাজের শিরোনাম" required>
+            <textarea id="taskDetails" placeholder="কাজের বিবরণ"></textarea>
+            <select id="taskPriority">
+                <option value="high">উচ্চ</option>
+                <option value="medium">মধ্যম</option>
+                <option value="low">নিম্ন</option>
+            </select>
+            <button id="addTaskBtn">কাজ যোগ করুন</button>
+        </div>
+
+        <div id="todaysTasks" class="card">
+            <h3>আজকের কাজ</h3>
+            <div class="task-list"></div>
+        </div>
+
+        <div id="upcomingTasks" class="card">
+            <h3>আগামীকালের কাজ</h3>
+            <div class="task-list"></div>
+        </div>
+
+        <div id="completedTasks" class="card">
+            <h3>সম্পন্ন কাজ</h3>
+            <div class="task-list"></div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('addTaskBtn').addEventListener('click', function() {
+            const subject = document.getElementById('taskSubject').value;
+            const subjectColor = document.getElementById('subjectColor').value;
+            const title = document.getElementById('taskTitle').value;
+            const details = document.getElementById('taskDetails').value;
+            const priority = document.getElementById('taskPriority').value;
+
+            if (!subject || !title) {
+                alert('বিষয় এবং কাজের শিরোনাম প্রয়োজন');
+                return;
+            }
+
+            const taskContainer = document.createElement('div');
+            taskContainer.className = 'card';
+
+            const subjectSpan = document.createElement('span');
+            subjectSpan.className = 'subject-custom';
+            subjectSpan.style.backgroundColor = subjectColor;
+            subjectSpan.innerText = subject;
+
+            const titleEl = document.createElement('h4');
+            titleEl.innerText = title;
+
+            const detailsEl = document.createElement('p');
+            detailsEl.innerText = details;
+
+            const statusSpan = document.createElement('span');
+            statusSpan.className = 'status-pending';
+            statusSpan.innerText = 'বাকি আছে';
+
+            taskContainer.appendChild(subjectSpan);
+            taskContainer.appendChild(titleEl);
+            taskContainer.appendChild(detailsEl);
+            taskContainer.appendChild(statusSpan);
+
+            document.querySelector('#todaysTasks .task-list').appendChild(taskContainer);
+
+            document.getElementById('taskSubject').value = '';
+            document.getElementById('subjectColor').value = '#ffffff';
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDetails').value = '';
+            document.getElementById('taskPriority').value = 'high';
+        });
+    </script>
+</body>
+</html>
+
