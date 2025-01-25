@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>হোমওয়ার্ক ম্যানেজমেন্ট সিস্টেম</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- User Panel with Current Time -->
+    <div id="userPanel">
+        <h2>হোমওয়ার্ক ট্র্যাকার</h2>
+        <div class="user-info">
+            <p><i class="fas fa-user"></i> ব্যবহারকারী: <span id="currentUser">SayfullahSayeb</span></p>
+            <p><i class="fas fa-clock"></i> বর্তমান সময়: <span id="currentDateTime"></span></p>
+        </div>
+    </div>
+
+    <!-- Add Task Button -->
+    <div class="add-task-btn" onclick="openModal()">
+        <i class="fas fa-plus"></i>
+    </div>
+
+    <!-- Add Task Modal -->
+    <div id="addTaskModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3><i class="fas fa-plus-circle"></i> নতুন কাজ যোগ করুন</h3>
+            <form id="addTaskForm" onsubmit="addTask(event)">
+                <div class="form-group">
+                    <label for="subject">বিষয়</label>
+                    <select id="subject" onchange="handleSubjectSelect(this)" required>
+                        <option value="">বিষয় নির্বাচন করুন</option>
+                        <option value="math">গণিত</option>
+                        <option value="bangla">বাংলা</option>
+                        <option value="english">ইংরেজি</option>
+                        <option value="custom">কাস্টম বিষয়...</option>
+                    </select>
+                    <div id="customSubjectDiv" style="display: none;" class="custom-subject-input">
+                        <input type="text" id="customSubject" placeholder="কাস্টম বিষয়ের নাম লিখুন">
+                        <div class="color-picker">
+                            <label>বিষয়ের রং বাছাই করুন:</label>
+                            <input type="color" id="subjectColor" value="#4ecdc4">
+                        </div>
+                        <button type="button" class="btn btn-sm" onclick="addCustomSubject()">
+                            <i class="fas fa-plus"></i> নতুন বিষয় যোগ করুন
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="title">শিরোনাম</label>
+                    <input type="text" id="title" placeholder="শিরোনাম লিখুন" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">বিবরণ</label>
+                    <textarea id="description" rows="3" placeholder="বিস্তারিত বিবরণ লিখুন"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="priority">অগ্রাধিকার</label>
+                    <select id="priority" required>
+                        <option value="high">উচ্চ</option>
+                        <option value="medium">মধ্যম</option>
+                        <option value="low">নিম্ন</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> যোগ করুন
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Task Modal -->
+    <div id="editTaskModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEditModal()">&times;</span>
+            <h3><i class="fas fa-edit"></i> কাজ সম্পাদনা করুন</h3>
+            <form id="editTaskForm" onsubmit="updateTask(event)">
+                <input type="hidden" id="editTaskId">
+                <div class="form-group">
+                    <label for="editSubject">বিষয়</label>
+                    <select id="editSubject" onchange="handleSubjectSelect(this, 'edit')" required>
+                        <option value="">বিষয় নির্বাচন করুন</option>
+                        <option value="math">গণিত</option>
+                        <option value="bangla">বাংলা</option>
+                        <option value="english">ইংরেজি</option>
+                        <option value="custom">কাস্টম বিষয়...</option>
+                    </select>
+                    <div id="editCustomSubjectDiv" style="display: none;" class="custom-subject-input">
+                        <input type="text" id="editCustomSubject" placeholder="কাস্টম বিষয়ের নাম লিখুন">
+                        <div class="color-picker">
+                            <label>বিষয়ের রং বাছাই করুন:</label>
+                            <input type="color" id="editSubjectColor" value="#4ecdc4">
+                        </div>
+                        <button type="button" class="btn btn-sm" onclick="addCustomSubject('edit')">
+                            <i class="fas fa-plus"></i> নতুন বিষয় যোগ করুন
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editTitle">শিরোনাম</label>
+                    <input type="text" id="editTitle" placeholder="শিরোনাম লিখুন" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">বিবরণ</label>
+                    <textarea id="editDescription" rows="3" placeholder="বিস্তারিত বিবরণ লিখুন"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="editPriority">অগ্রাধিকার</label>
+                    <select id="editPriority" required>
+                        <option value="high">উচ্চ</option>
+                        <option value="medium">মধ্যম</option>
+                        <option value="low">নিম্ন</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> আপডেট করুন
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="homeworkContainer">
+        <!-- Today's Tasks Section -->
+        <div id="todaysTasks" class="task-section">
+            <h3><i class="fas fa-calendar-day"></i> আজকের কাজ</h3>
+            <div id="todaysTasksList" class="task-list"></div>
+        </div>
+
+        <!-- Unfinished Tasks Section -->
+        <div id="upcomingTasks" class="task-section">
+            <h3><i class="fas fa-clock"></i> অসম্পূর্ণ কাজ</h3>
+            <div class="date-filter-container">
+                <label for="unfinishedDateFilter">
+                    <i class="fas fa-filter"></i> তারিখ অনুযায়ী ফিল্টার:
+                </label>
+                <input type="date" id="unfinishedDateFilter" class="date-filter">
+                <button onclick="clearDateFilter('unfinishedDateFilter')" class="btn btn-clear">
+                    <i class="fas fa-times"></i> ফিল্টার মুছুন
+                </button>
+            </div>
+            <div id="upcomingTasksList" class="task-list"></div>
+        </div>
+
+        <!-- Completed Tasks Section -->
+        <div id="completedTasks" class="task-section">
+            <h3><i class="fas fa-check-double"></i> সম্পন্ন কাজ</h3>
+            <div class="date-filter-container">
+                <label for="completedDateFilter">
+                    <i class="fas fa-filter"></i> তারিখ অনুযায়ী ফিল্টার:
+                </label>
+                <input type="date" id="completedDateFilter" class="date-filter">
+                <button onclick="clearDateFilter('completedDateFilter')" class="btn btn-clear">
+                    <i class="fas fa-times"></i> ফিল্টার মুছুন
+                </button>
+            </div>
+            <div id="completedTasksList" class="task-list"></div>
+        </div>
+
+        <!-- Settings Section -->
+        <div id="settings" class="task-section">
+            <h3><i class="fas fa-cog"></i> সেটিংস</h3>
+            <div class="settings-container">
+                <!-- Username Settings -->
+                <div class="form-group">
+                    <h4><i class="fas fa-user-edit"></i> ব্যবহারকারীর নাম পরিবর্তন</h4>
+                    <input type="text" id="changeUsername" class="form-control" placeholder="নতুন ব্যবহারকারীর নাম">
+                    <button onclick="changeUsername()" class="btn btn-primary">
+                        <i class="fas fa-save"></i> সংরক্ষণ করুন
+                    </button>
+                </div>
+
+                <!-- Manage Custom Subjects -->
+                <div class="form-group">
+                    <h4><i class="fas fa-book"></i> কাস্টম বিষয় ব্যবস্থাপনা</h4>
+                    <div id="customSubjectsList"></div>
+                </div>
+
+                <!-- Backup Settings -->
+                <div class="form-group">
+                    <h4><i class="fas fa-download"></i> ব্যাকআপ এবং পুনরুদ্ধার</h4>
+                    <div class="backup-actions">
+                        <button onclick="backupData()" class="btn btn-primary">
+                            <i class="fas fa-copy"></i> ব্যাকআপ কপি করুন
+                        </button>
+                        <button onclick="downloadBackup()" class="btn btn-primary">
+                            <i class="fas fa-download"></i> ব্যাকআপ ডাউনলোড করুন
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Restore Settings -->
+                <div class="form-group">
+                    <h4><i class="fas fa-upload"></i> ডাটা পুনরুদ্ধার</h4>
+                    <textarea id="restoreData" class="form-control" rows="4" 
+                        placeholder="এখানে ব্যাকআপ ডাটা পেস্ট করুন"></textarea>
+                    <div class="restore-actions">
+                        <button onclick="restoreFromText()" class="btn btn-primary">
+                            <i class="fas fa-paste"></i> টেক্সট থেকে পুনরুদ্ধার
+                        </button>
+                        <div class="file-upload">
+                            <input type="file" id="restoreFile" accept=".json" style="display: none;">
+                            <button onclick="document.getElementById('restoreFile').click()" class="btn btn-primary">
+                                <i class="fas fa-file-upload"></i> ফাইল থেকে পুনরুদ্ধার
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Bar -->
+    <nav class="mobile-nav">
+        <a href="#" class="nav-item active-nav" onclick="showSection('todaysTasks', this)">
+            <i class="fas fa-tasks"></i>
+            <span>আজকের</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('upcomingTasks', this)">
+            <i class="fas fa-calendar"></i>
+            <span>অসম্পূর্ণ</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('completedTasks', this)">
+            <i class="fas fa-check-circle"></i>
+            <span>সম্পন্ন</span>
+        </a>
+        <a href="#" class="nav-item" onclick="showSection('settings', this)">
+            <i class="fas fa-cog"></i>
+            <span>সেটিংস</span>
+        </a>
+    </nav>
+
+    <script src="app.js"></script>
+</body>
+</html>
