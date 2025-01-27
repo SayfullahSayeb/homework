@@ -3,24 +3,30 @@ const Storage = {
     KEYS: {
         TASKS: 'tasks',
         SETTINGS: 'settings',
-        USER: 'user'
+        USER: 'user',
+        SUBJECTS: 'subjects'  // Added for subject management
     },
 
     defaults: {
-        user: {
-            login: 'mdsayeb7',
-            lastActive: '2025-01-27 15:33:44'
-        },
         settings: {
-            theme: 'system'
-        }
+            theme: 'system',
+            userName: 'এমডি সায়েব',  // Added default user name
+            lastUpdated: '2025-01-27 15:57:00'
+        },
+        subjects: [  // Added default subjects
+            'বাংলা',
+            'ইংরেজি',
+            'গণিত',
+            'বিজ্ঞান',
+            'সমাজ'
+        ]
     },
 
     // Core Task Operations
     getTasks() {
         try {
             const tasks = JSON.parse(localStorage.getItem(this.KEYS.TASKS) || '[]');
-            return tasks.sort((a, b) => new Date(a.dueDate + ' ' + a.dueTime) - new Date(b.dueDate + ' ' + b.dueTime));
+            return tasks.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by creation date
         } catch {
             return [];
         }
@@ -28,16 +34,18 @@ const Storage = {
 
     saveTasks(tasks) {
         localStorage.setItem(this.KEYS.TASKS, JSON.stringify(tasks));
+        this.updateLastModified();
     },
 
     addTask(task) {
         const tasks = this.getTasks();
-        tasks.push({
+        const newTask = {
             id: Date.now(),
             ...task,
             createdAt: new Date().toISOString(),
             status: 'pending'
-        });
+        };
+        tasks.unshift(newTask); // Add to beginning of array
         this.saveTasks(tasks);
         return true;
     },
@@ -46,7 +54,11 @@ const Storage = {
         const tasks = this.getTasks();
         const index = tasks.findIndex(t => t.id === taskId);
         if (index !== -1) {
-            tasks[index] = { ...tasks[index], ...updates };
+            tasks[index] = { 
+                ...tasks[index], 
+                ...updates,
+                updatedAt: new Date().toISOString()
+            };
             this.saveTasks(tasks);
             return true;
         }
@@ -63,20 +75,6 @@ const Storage = {
         return false;
     },
 
-    // Task Queries
-    getTodaysTasks() {
-        const today = new Date().toISOString().split('T')[0];
-        return this.getTasks().filter(task => task.dueDate === today);
-    },
-
-    getIncompleteTasks() {
-        return this.getTasks().filter(task => !task.completed);
-    },
-
-    getCompletedTasks() {
-        return this.getTasks().filter(task => task.completed);
-    },
-
     // Settings Management
     getSettings() {
         try {
@@ -87,17 +85,52 @@ const Storage = {
     },
 
     saveSettings(settings) {
-        localStorage.setItem(this.KEYS.SETTINGS, JSON.stringify(settings));
+        const updatedSettings = {
+            ...settings,
+            lastUpdated: new Date().toISOString()
+        };
+        localStorage.setItem(this.KEYS.SETTINGS, JSON.stringify(updatedSettings));
         return true;
     },
 
-    // User Management
-    getUser() {
+    updateUserName(name) {
+        const settings = this.getSettings();
+        return this.saveSettings({
+            ...settings,
+            userName: name
+        });
+    },
+
+    // Subject Management
+    getSubjects() {
         try {
-            return JSON.parse(localStorage.getItem(this.KEYS.USER)) || this.defaults.user;
+            return JSON.parse(localStorage.getItem(this.KEYS.SUBJECTS)) || this.defaults.subjects;
         } catch {
-            return this.defaults.user;
+            return this.defaults.subjects;
         }
+    },
+
+    saveSubjects(subjects) {
+        localStorage.setItem(this.KEYS.SUBJECTS, JSON.stringify(subjects));
+        return true;
+    },
+
+    addSubject(subject) {
+        const subjects = this.getSubjects();
+        if (!subjects.includes(subject)) {
+            subjects.push(subject);
+            return this.saveSubjects(subjects);
+        }
+        return false;
+    },
+
+    deleteSubject(subject) {
+        const subjects = this.getSubjects();
+        const filtered = subjects.filter(s => s !== subject);
+        if (filtered.length !== subjects.length) {
+            return this.saveSubjects(filtered);
+        }
+        return false;
     },
 
     // Data Management
@@ -105,17 +138,18 @@ const Storage = {
         return {
             tasks: this.getTasks(),
             settings: this.getSettings(),
-            user: this.getUser(),
+            subjects: this.getSubjects(),
             exportDate: new Date().toISOString()
         };
     },
 
     importData(data) {
-        if (!data?.tasks?.length) return false;
+        if (!data) return false;
         
         try {
-            this.saveTasks(data.tasks);
+            if (data.tasks) this.saveTasks(data.tasks);
             if (data.settings) this.saveSettings(data.settings);
+            if (data.subjects) this.saveSubjects(data.subjects);
             return true;
         } catch {
             return false;
@@ -126,6 +160,14 @@ const Storage = {
         localStorage.clear();
         this.saveTasks([]);
         this.saveSettings(this.defaults.settings);
+        this.saveSubjects(this.defaults.subjects);
         return true;
+    },
+
+    // Utility Methods
+    updateLastModified() {
+        const settings = this.getSettings();
+        settings.lastUpdated = new Date().toISOString();
+        this.saveSettings(settings);
     }
 };
