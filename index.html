@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>হোমওয়ার্ক ট্র্যাকার</title>
+    <link rel="stylesheet" href="shared/css/variables.css">
+    <link rel="stylesheet" href="shared/css/common.css">
+    <style>
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-color);
+            z-index: 1000;
+        }
+
+        .app-logo {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--border-color);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .user-info {
+            margin-top: 1rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fade-out {
+            to { opacity: 0; }
+        }
+
+        .fade-out {
+            animation: fade-out 0.3s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-screen">
+        <div class="app-logo">হোমওয়ার্ক ট্র্যাকার</div>
+        <div class="loading-spinner"></div>
+        <div class="user-info">
+            <span id="currentUser">মোঃ সায়েব</span>
+            <span id="currentTime"></span>
+        </div>
+    </div>
+
+    <script src="shared/js/utils.js"></script>
+    <script src="shared/js/time.js"></script>
+    <script src="shared/js/storage.js"></script>
+    <script>
+        // Initialize app state
+        const currentUser = Storage.getUser();
+        const settings = Storage.getSettings();
+
+        // Apply theme
+        document.body.setAttribute('data-theme', settings.theme);
+
+        // Update time display
+        function updateTime() {
+            const timeDisplay = document.getElementById('currentTime');
+            if (timeDisplay) {
+                timeDisplay.textContent = TimeUtils.formatDateTime(new Date());
+            }
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', () => {
+            // Update time initially and start interval
+            updateTime();
+            setInterval(updateTime, 60000);
+
+            // Redirect after a short delay
+            setTimeout(() => {
+                const loadingScreen = document.querySelector('.loading-screen');
+                loadingScreen.classList.add('fade-out');
+                
+                // Redirect to today's tasks page
+                setTimeout(() => {
+                    window.location.href = '/pages/today/index.html';
+                }, 300);
+            }, 1500);
+        });
+    </script>
+</body>
+</html>
