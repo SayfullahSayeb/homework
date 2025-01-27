@@ -1,57 +1,154 @@
- 
-let currentTheme = localStorage.getItem('theme') || 'system';
+// Initialize settings when page loads
+document.addEventListener('DOMContentLoaded', () => {
+    initializeSettings();
+    loadSubjects();
+    loadSavedData();
+});
 
 function initializeSettings() {
-    // Set current theme
-    document.querySelectorAll('.theme-option').forEach(option => {
-        if (option.dataset.theme === currentTheme) {
-            option.classList.add('active');
-        }
-        option.addEventListener('click', () => setTheme(option.dataset.theme));
-    });
+    // Initialize dark mode toggle
+    initializeThemeToggle();
 
-    // Load notification settings
+    // Initialize notification settings
     document.getElementById('taskReminders').checked = 
         localStorage.getItem('taskReminders') !== 'false';
     document.getElementById('dailyDigest').checked = 
         localStorage.getItem('dailyDigest') === 'true';
 
-    // Set user info
-    document.getElementById('userName').textContent = 'এমডি সায়েব';
-    document.getElementById('userLoginName').textContent = 'mdsayeb7';
+    // Add event listeners for notification toggles
+    document.getElementById('taskReminders').addEventListener('change', handleNotificationChange);
+    document.getElementById('dailyDigest').addEventListener('change', handleNotificationChange);
+}
+
+// Theme Management
+function initializeThemeToggle() {
+    const darkModeToggle = document.getElementById('darkMode');
+    darkModeToggle.checked = localStorage.getItem('theme') === 'dark';
+    
+    darkModeToggle.addEventListener('change', (e) => {
+        const theme = e.target.checked ? 'dark' : 'light';
+        setTheme(theme);
+    });
 }
 
 function setTheme(theme) {
-    currentTheme = theme;
     localStorage.setItem('theme', theme);
-    
-    document.querySelectorAll('.theme-option').forEach(option => {
-        option.classList.toggle('active', option.dataset.theme === theme);
-    });
+    document.body.setAttribute('data-theme', theme);
+}
 
-    // Apply theme
-    if (theme === 'system') {
-        const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-    } else {
-        document.body.setAttribute('data-theme', theme);
+// Profile Management
+function changeProfilePicture() {
+    document.getElementById('profileImageInput').click();
+}
+
+document.getElementById('profileImageInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const profileImage = document.getElementById('profileImage');
+            const defaultIcon = document.getElementById('defaultProfileIcon');
+            
+            profileImage.src = e.target.result;
+            profileImage.style.display = 'block';
+            defaultIcon.style.display = 'none';
+            
+            localStorage.setItem('profileImage', e.target.result);
+            showToast('প্রোফাইল ছবি আপডেট করা হয়েছে।');
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+function editName() {
+    const nameElement = document.getElementById('userName');
+    const currentName = nameElement.textContent;
+    const newName = prompt('আপনার নাম সম্পাদনা করুন:', currentName);
+    
+    if (newName && newName.trim()) {
+        nameElement.textContent = newName.trim();
+        localStorage.setItem('userName', newName.trim());
+        showToast('নাম আপডেট করা হয়েছে।');
     }
 }
 
+// Subject Management
+function loadSubjects() {
+    const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+    const subjectList = document.querySelector('.subject-list');
+    
+    subjectList.innerHTML = subjects.map((subject, index) => `
+        <div class="subject-item">
+            <span class="subject-name">${subject}</span>
+            <div class="subject-actions">
+                <button class="subject-btn edit" onclick="editSubject(${index})">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="subject-btn delete" onclick="deleteSubject(${index})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function addSubject() {
+    const newSubject = prompt('নতুন বিষয়ের নাম লিখুন:');
+    if (newSubject && newSubject.trim()) {
+        const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+        subjects.push(newSubject.trim());
+        localStorage.setItem('subjects', JSON.stringify(subjects));
+        loadSubjects();
+        showToast('নতুন বিষয় যোগ করা হয়েছে।');
+    }
+}
+
+function editSubject(index) {
+    const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+    const newName = prompt('বিষয়ের নাম সম্পাদনা করুন:', subjects[index]);
+    
+    if (newName && newName.trim()) {
+        subjects[index] = newName.trim();
+        localStorage.setItem('subjects', JSON.stringify(subjects));
+        loadSubjects();
+        showToast('বিষয় আপডেট করা হয়েছে।');
+    }
+}
+
+function deleteSubject(index) {
+    showConfirmDialog(
+        'বিষয় মুছে ফেলা',
+        'আপনি কি এই বিষয়টি মুছে ফেলতে চান?',
+        () => {
+            const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+            subjects.splice(index, 1);
+            localStorage.setItem('subjects', JSON.stringify(subjects));
+            loadSubjects();
+            showToast('বিষয় মুছে ফেলা হয়েছে।');
+        }
+    );
+}
+
+// Notification Settings
 function handleNotificationChange(event) {
     const setting = event.target.id;
     localStorage.setItem(setting, event.target.checked);
 }
 
+// Data Management
 function exportData() {
     const data = {
         tasks: Storage.getTasks(),
         settings: {
-            theme: currentTheme,
+            theme: localStorage.getItem('theme'),
             taskReminders: document.getElementById('taskReminders').checked,
-            dailyDigest: document.getElementById('dailyDigest').checked
+            dailyDigest: document.getElementById('dailyDigest').checked,
+            subjects: JSON.parse(localStorage.getItem('subjects') || '[]'),
+            userName: localStorage.getItem('userName'),
+            profileImage: localStorage.getItem('profileImage')
         }
     };
+    
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -101,6 +198,7 @@ function importData() {
                 if (data.settings) {
                     if (data.settings.theme) {
                         setTheme(data.settings.theme);
+                        document.getElementById('darkMode').checked = data.settings.theme === 'dark';
                     }
                     if (typeof data.settings.taskReminders === 'boolean') {
                         document.getElementById('taskReminders').checked = data.settings.taskReminders;
@@ -110,12 +208,28 @@ function importData() {
                         document.getElementById('dailyDigest').checked = data.settings.dailyDigest;
                         localStorage.setItem('dailyDigest', data.settings.dailyDigest);
                     }
+                    if (Array.isArray(data.settings.subjects)) {
+                        localStorage.setItem('subjects', JSON.stringify(data.settings.subjects));
+                        loadSubjects();
+                    }
+                    if (data.settings.userName) {
+                        localStorage.setItem('userName', data.settings.userName);
+                        document.getElementById('userName').textContent = data.settings.userName;
+                    }
+                    if (data.settings.profileImage) {
+                        localStorage.setItem('profileImage', data.settings.profileImage);
+                        const profileImage = document.getElementById('profileImage');
+                        const defaultIcon = document.getElementById('defaultProfileIcon');
+                        profileImage.src = data.settings.profileImage;
+                        profileImage.style.display = 'block';
+                        defaultIcon.style.display = 'none';
+                    }
                 }
 
-                alert('ডাটা সফলভাবে ইমপোর্ট করা হয়েছে।');
-                location.reload();
+                showToast('ডাটা সফলভাবে ইমপোর্ট করা হয়েছে।');
+                setTimeout(() => location.reload(), 2000);
             } catch (error) {
-                alert('ডাটা ইমপোর্ট করতে সমস্যা হয়েছে: ' + error.message);
+                showToast('ডাটা ইমপোর্ট করতে সমস্যা হয়েছে: ' + error.message);
             }
         };
         reader.readAsText(file);
@@ -125,30 +239,71 @@ function importData() {
 }
 
 function clearData() {
-    if (confirm('আপনি কি নিশ্চিত যে আপনি সমস্ত ডাটা মুছে ফেলতে চান? এই কাজটি অপরিবর্তনীয়।')) {
-        // Clear all tasks
-        Storage.saveTasks([]);
-        
-        // Reset settings to default
-        localStorage.setItem('theme', 'system');
-        localStorage.setItem('taskReminders', 'true');
-        localStorage.setItem('dailyDigest', 'false');
-        
-        alert('সমস্ত ডাটা মুছে ফেলা হয়েছে।');
-        location.reload();
+    showConfirmDialog(
+        'নিশ্চিতকরণ',
+        'আপনি কি নিশ্চিত যে আপনি সমস্ত ডাটা মুছে ফেলতে চান? এই কাজটি অপরিবর্তনীয়।',
+        () => {
+            Storage.saveTasks([]);
+            localStorage.setItem('theme', 'light');
+            localStorage.setItem('taskReminders', 'true');
+            localStorage.setItem('dailyDigest', 'false');
+            localStorage.setItem('subjects', '[]');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('profileImage');
+            
+            showToast('সমস্ত ডাটা মুছে ফেলা হয়েছে।');
+            setTimeout(() => location.reload(), 2000);
+        }
+    );
+}
+
+// Dialog and Toast Utilities
+function showConfirmDialog(title, message, onConfirm) {
+    const dialog = document.querySelector('.dialog-overlay');
+    const dialogTitle = document.querySelector('.confirm-dialog-title');
+    const dialogMessage = document.querySelector('.confirm-dialog-message');
+    const cancelBtn = document.querySelector('.confirm-btn-cancel');
+    const deleteBtn = document.querySelector('.confirm-btn-delete');
+
+    dialogTitle.textContent = title;
+    dialogMessage.textContent = message;
+    dialog.style.display = 'flex';
+
+    cancelBtn.onclick = () => {
+        dialog.style.display = 'none';
+    }
+
+    deleteBtn.onclick = () => {
+        dialog.style.display = 'none';
+        onConfirm();
     }
 }
 
-// Listen for system theme changes
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-    if (currentTheme === 'system') {
-        document.body.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+function showToast(message, duration = 3000) {
+    const toast = document.querySelector('.toast');
+    toast.textContent = message;
+    toast.style.display = 'block';
+    
+    setTimeout(() => {
+        toast.style.display = 'none';
+    }, duration);
+}
+
+// Load saved data when page loads
+function loadSavedData() {
+    // Load profile image
+    const savedImage = localStorage.getItem('profileImage');
+    if (savedImage) {
+        const profileImage = document.getElementById('profileImage');
+        const defaultIcon = document.getElementById('defaultProfileIcon');
+        profileImage.src = savedImage;
+        profileImage.style.display = 'block';
+        defaultIcon.style.display = 'none';
     }
-});
-
-// Add event listeners for notification toggles
-document.getElementById('taskReminders').addEventListener('change', handleNotificationChange);
-document.getElementById('dailyDigest').addEventListener('change', handleNotificationChange);
-
-// Initialize settings when page loads
-document.addEventListener('DOMContentLoaded', initializeSettings);
+    
+    // Load name
+    const savedName = localStorage.getItem('userName');
+    if (savedName) {
+        document.getElementById('userName').textContent = savedName;
+    }
+}

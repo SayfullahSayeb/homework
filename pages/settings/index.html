@@ -14,18 +14,6 @@
 
 <body>
     <div id="app">
-        <header class="main-header">
-            <div class="header-content">
-                <div class="time-display">
-                    <span id="currentDateTime"></span>
-                </div>
-                <div class="user-info">
-                    <i class="bi bi-person-circle"></i>
-                    <span id="userLogin">এমডি সায়েব</span>
-                </div>
-            </div>
-        </header>
-
         <main id="mainContent">
             <div class="settings-container">
                 <!-- Profile Section -->
@@ -36,48 +24,80 @@
                     </h2>
                     <div class="section-content">
                         <div class="profile-info">
-                            <div class="profile-picture">
-                                <i class="bi bi-person-circle"></i>
+                            <div class="profile-picture" onclick="changeProfilePicture()">
+                                <input type="file" id="profileImageInput" accept="image/*" style="display: none">
+                                <i class="bi bi-person-circle" id="defaultProfileIcon"></i>
+                                <img id="profileImage" style="display: none">
+                                <div class="edit-overlay">
+                                    <i class="bi bi-pencil"></i>
+                                </div>
                             </div>
                             <div class="profile-details">
                                 <div class="info-item">
                                     <span class="label">নাম</span>
-                                    <span class="value" id="userName">এমডি সায়েব</span>
-                                </div>
-                                <div class="info-item">
-                                    <span class="label">ইউজার নেম</span>
-                                    <span class="value" id="userLoginName">mdsayeb7</span>
+                                    <div class="editable-value">
+                                        <span id="userName">এমডি সায়েব</span>
+                                        <button class="edit-btn" onclick="editName()">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Appearance Section -->
+                <!-- Theme Section -->
                 <section class="settings-section">
                     <h2 class="section-title">
                         <i class="bi bi-palette"></i>
                         অ্যাপের থিম
                     </h2>
-                    <div class="settings-container">
-                        <div class="section-content">
-                            <div class="theme-options">
-                                <div class="theme-option" data-theme="light">
-                                    <i class="bi bi-sun-fill theme-icon"></i>
-                                    <span class="theme-label">লাইট মোড</span>
+                    <div class="section-content">
+                        <div class="settings-list">
+                            <div class="settings-item">
+                                <div class="setting-info">
+                                    <span class="setting-title">ডার্ক মোড</span>
+                                    <span class="setting-description">অ্যাপের ডার্ক থিম টগল করুন</span>
                                 </div>
-                                <div class="theme-option" data-theme="dark">
-                                    <i class="bi bi-moon-fill theme-icon"></i>
-                                    <span class="theme-label">ডার্ক মোড</span>
-                                </div>
-                                <div class="theme-option" data-theme="system">
-                                    <i class="bi bi-display theme-icon"></i>
-                                    <span class="theme-label">সিস্টেম ডিফল্ট</span>
-                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="darkMode">
+                                    <span class="toggle-slider"></span>
+                                </label>
                             </div>
                         </div>
                     </div>
+                </section>
 
+                <!-- Language Section -->
+                <section class="settings-section">
+                    <h2 class="section-title">
+                        <i class="bi bi-translate"></i>
+                        ভাষা
+                        <span class="beta-badge">বেটা</span>
+                    </h2>
+                    <div class="section-content">
+                        <div class="maintenance-notice">
+                            এই ফিচারটি বর্তমানে বেটা পর্যায়ে রয়েছে
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Subject Management -->
+                <section class="settings-section">
+                    <h2 class="section-title">
+                        <i class="bi bi-book"></i>
+                        বিষয় ব্যবস্থাপনা
+                    </h2>
+                    <div class="section-content">
+                        <div class="subject-list">
+                            <!-- Subjects will be populated here -->
+                        </div>
+                        <button class="action-btn" onclick="addSubject()">
+                            <i class="bi bi-plus-lg"></i>
+                            নতুন বিষয় যোগ করুন
+                        </button>
+                    </div>
                 </section>
 
                 <!-- Notification Settings -->
@@ -109,6 +129,20 @@
                                 </label>
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                <!-- Feedback Section -->
+                <section class="settings-section">
+                    <h2 class="section-title">
+                        <i class="bi bi-chat-dots"></i>
+                        ফিডব্যাক
+                    </h2>
+                    <div class="section-content">
+                        <button class="action-btn" onclick="window.open('xyz.com', '_blank')">
+                            <i class="bi bi-arrow-up-right"></i>
+                            ফিডব্যাক দিন
+                        </button>
                     </div>
                 </section>
 
@@ -174,6 +208,20 @@
             </a>
         </nav>
     </div>
+
+    <div class="dialog-overlay">
+        <div class="confirm-dialog">
+            <h3 class="confirm-dialog-title">নিশ্চিতকরণ</h3>
+            <p class="confirm-dialog-message">
+                আপনি কি নিশ্চিত যে আপনি সমস্ত ডাটা মুছে ফেলতে চান? এই কাজটি অপরিবর্তনীয়।
+            </p>
+            <div class="confirm-dialog-buttons">
+                <button class="confirm-btn confirm-btn-cancel">না</button>
+                <button class="confirm-btn confirm-btn-delete">হ্যাঁ</button>
+            </div>
+        </div>
+    </div>
+    <div class="toast">সমস্ত ডাটা মুছে ফেলা হয়েছে।</div>
 
     <script src="../../shared/js/utils.js"></script>
     <script src="../../shared/js/time.js"></script>
