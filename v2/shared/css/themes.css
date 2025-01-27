@@ -1,1 +1,51 @@
- 
+ /* Light Theme (Default) */
+.light-theme-preview {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+}
+
+/* Dark Theme */
+.dark-theme-preview {
+    background: #121212;
+    border: 1px solid var(--border-color);
+}
+
+/* System Theme Preview */
+.system-theme-preview {
+    background: linear-gradient(135deg, #ffffff 50%, #121212 50%);
+    border: 1px solid var(--border-color);
+}
+
+/* Theme Specific Overrides */
+[data-theme="light"] {
+    /* Add any light theme specific overrides */
+}
+
+[data-theme="dark"] {
+    /* Add any dark theme specific overrides */
+}
+
+/* Theme Preview Cards */
+.theme-preview {
+    aspect-ratio: 16/9;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--spacing-sm);
+    transition: border-color var(--transition-fast);
+}
+
+.theme-option {
+    cursor: pointer;
+    text-align: center;
+    padding: var(--spacing-sm);
+    border-radius: var(--radius-md);
+    transition: background-color var(--transition-fast);
+}
+
+.theme-option:hover {
+    background: var(--shadow-color);
+}
+
+.theme-option.active .theme-preview {
+    border-color: var(--primary-color);
+    border-width: 2px;
+}

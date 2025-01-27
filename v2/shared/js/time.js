@@ -1,78 +1,156 @@
-const banglaNumbers = {
-    '0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪',
-    '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'
+const TimeUtils = {
+    // Map English numbers to Bengali numbers
+    bengaliNumerals: {
+        '0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪',
+        '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯'
+    },
+
+    // Bengali month names
+    bengaliMonths: [
+        'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
+        'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
+    ],
+
+    // Bengali weekday names
+    bengaliWeekdays: [
+        'রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার',
+        'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'
+    ],
+
+    // Convert English numbers to Bengali
+    toBengaliNumerals(number) {
+        return number.toString().replace(/[0-9]/g, digit => this.bengaliNumerals[digit]);
+    },
+
+    // Format time to Bengali (12-hour format)
+    formatTimeToBengali(date) {
+        if (typeof date === 'string') {
+            date = new Date(date);
+        }
+
+        let hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'অপরাহ্ন' : 'পূর্বাহ্ন';
+        
+        hours = hours % 12;
+        hours = hours ? hours : 12; // Convert 0 to 12
+
+        const bengaliHours = this.toBengaliNumerals(hours.toString().padStart(2, '0'));
+        const bengaliMinutes = this.toBengaliNumerals(minutes.toString().padStart(2, '0'));
+
+        return `${bengaliHours}:${bengaliMinutes} ${ampm}`;
+    },
+
+    // Format date to Bengali
+    formatDateToBengali(date) {
+        if (typeof date === 'string') {
+            date = new Date(date);
+        }
+
+        const day = this.toBengaliNumerals(date.getDate());
+        const month = this.bengaliMonths[date.getMonth()];
+        const year = this.toBengaliNumerals(date.getFullYear());
+        const weekday = this.bengaliWeekdays[date.getDay()];
+
+        return `${weekday}, ${day} ${month} ${year}`;
+    },
+
+    // Format relative time (e.g., "2 days ago" in Bengali)
+    formatRelativeTime(date) {
+        if (typeof date === 'string') {
+            date = new Date(date);
+        }
+
+        const now = new Date();
+        const diffTime = now - date;
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const diffHours = Math.floor(diffTime / (1000 * 60 * 60));
+        const diffMinutes = Math.floor(diffTime / (1000 * 60));
+
+        if (diffDays > 30) {
+            return this.formatDateToBengali(date);
+        } else if (diffDays > 0) {
+            return `${this.toBengaliNumerals(diffDays)} দিন আগে`;
+        } else if (diffHours > 0) {
+            return `${this.toBengaliNumerals(diffHours)} ঘণ্টা আগে`;
+        } else if (diffMinutes > 0) {
+            return `${this.toBengaliNumerals(diffMinutes)} মিনিট আগে`;
+        } else {
+            return 'এইমাত্র';
+        }
+    },
+
+    // Format deadline time
+    formatDeadline(dueDate, dueTime) {
+        const deadline = new Date(`${dueDate} ${dueTime}`);
+        const now = new Date();
+        const diffTime = deadline - now;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffTime < 0) {
+            return 'সময় শেষ';
+        }
+
+        if (this.isToday(deadline)) {
+            const hours = Math.ceil(diffTime / (1000 * 60 * 60));
+            if (hours < 1) {
+                const minutes = Math.ceil(diffTime / (1000 * 60));
+                return `${this.toBengaliNumerals(minutes)} মিনিট বাকি`;
+            }
+            return `${this.toBengaliNumerals(hours)} ঘণ্টা বাকি`;
+        }
+
+        if (diffDays === 1) {
+            return 'আগামীকাল শেষ';
+        }
+
+        return `${this.toBengaliNumerals(diffDays)} দিন বাকি`;
+    },
+
+    // Check if date is today
+    isToday(date) {
+        if (typeof date === 'string') {
+            date = new Date(date);
+        }
+        const today = new Date();
+        return date.toDateString() === today.toDateString();
+    },
+
+    // Check if date is tomorrow
+    isTomorrow(date) {
+        if (typeof date === 'string') {
+            date = new Date(date);
+        }
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        return date.toDateString() === tomorrow.toDateString();
+    },
+
+    // Get current time in Bengali
+    getCurrentTime() {
+        return this.formatTimeToBengali(new Date());
+    },
+
+    // Get current date in Bengali
+    getCurrentDate() {
+        return this.formatDateToBengali(new Date());
+    },
+
+    // Format task due time
+    formatTaskDueTime(dueDate, dueTime) {
+        const date = new Date(`${dueDate} ${dueTime}`);
+        if (this.isToday(date)) {
+            return `আজ ${this.formatTimeToBengali(date)}`;
+        }
+        if (this.isTomorrow(date)) {
+            return `আগামীকাল ${this.formatTimeToBengali(date)}`;
+        }
+        return `${this.formatDateToBengali(date)} ${this.formatTimeToBengali(date)}`;
+    }
 };
 
-const banglaWeekdays = {
-    0: 'রবিবার',
-    1: 'সোমবার',
-    2: 'মঙ্গলবার',
-    3: 'বুধবার',
-    4: 'বৃহস্পতিবার',
-    5: 'শুক্রবার',
-    6: 'শনিবার'
-};
-
-const banglaMonths = {
-    0: 'জানুয়ারি',
-    1: 'ফেব্রুয়ারি',
-    2: 'মার্চ',
-    3: 'এপ্রিল',
-    4: 'মে',
-    5: 'জুন',
-    6: 'জুলাই',
-    7: 'আগস্ট',
-    8: 'সেপ্টেম্বর',
-    9: 'অক্টোবর',
-    10: 'নভেম্বর',
-    11: 'ডিসেম্বর'
-};
-
-const banglaTimePhases = {
-    night: 'রাত',
-    morning: 'সকাল',
-    noon: 'দুপুর',
-    afternoon: 'বিকাল',
-    evening: 'সন্ধ্যা'
-};
-
-function toBanglaNumber(number) {
-    return number.toString().replace(/[0-9]/g, digit => banglaNumbers[digit]);
-}
-
-function getTimePhase(hours) {
-    if (hours >= 0 && hours < 4) return banglaTimePhases.night;      // রাত (12 AM - 4 AM)
-    if (hours >= 4 && hours < 11) return banglaTimePhases.morning;   // সকাল (4 AM - 11 AM)
-    if (hours >= 11 && hours < 15) return banglaTimePhases.noon;     // দুপুর (11 AM - 3 PM)
-    if (hours >= 15 && hours < 18) return banglaTimePhases.afternoon;// বিকাল (3 PM - 6 PM)
-    if (hours >= 18 && hours < 20) return banglaTimePhases.evening;  // সন্ধ্যা (6 PM - 8 PM)
-    return banglaTimePhases.night;                                   // রাত (8 PM - 12 AM)
-}
-
-function formatTimeToBangla(date) {
-    const weekday = banglaWeekdays[date.getDay()];
-    const day = toBanglaNumber(date.getDate());
-    const month = banglaMonths[date.getMonth()];
-    const year = toBanglaNumber(date.getFullYear());
-    
-    let hours = date.getHours();
-    const timePhase = getTimePhase(hours);
-    
-    // Convert to 12-hour format
-    hours = hours % 12;
-    hours = hours ? hours : 12;
-    
-    const banglaHours = toBanglaNumber(hours);
-    const minutes = toBanglaNumber(date.getMinutes().toString().padStart(2, '0'));
-
-    return `আজ ${weekday}, ${day} ${month} ${year} | সময় ${timePhase} ${banglaHours}টা ${minutes} মিনিট`;
-}
-
-function updateDateTime() {
-    const now = new Date();
-    const formattedTime = formatTimeToBangla(now);
-    document.getElementById('currentDateTime').textContent = formattedTime;
-}
-
-setInterval(updateDateTime, 60000); // Update every minute
-document.addEventListener('DOMContentLoaded', updateDateTime);
+// Example usage:
+// TimeUtils.formatTimeToBengali(new Date()); // Returns time in Bengali
+// TimeUtils.formatDateToBengali(new Date()); // Returns date in Bengali
+// TimeUtils.formatRelativeTime(new Date('2025-01-26')); // Returns "১ দিন আগে"
+// TimeUtils.formatDeadline('2025-01-28', '15:00'); // Returns time remaining in Bengali

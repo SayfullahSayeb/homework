@@ -1,1 +1,179 @@
  
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সেটিংস - হোমওয়ার্ক ট্র্যাকার</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../shared/css/variables.css">
+    <link rel="stylesheet" href="../../shared/css/common.css">
+    <link rel="stylesheet" href="../../shared/css/themes.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header class="main-header">
+            <div class="header-content">
+                <div class="time-display">
+                    <span id="currentDateTime"></span>
+                </div>
+                <div class="user-info">
+                    <i class="bi bi-person-circle"></i>
+                    <span id="userLogin">এমডি সায়েব</span>
+                </div>
+            </div>
+        </header>
+
+        <main id="mainContent">
+            <div class="settings-container">
+                <!-- Profile Section -->
+                <section class="settings-section">
+                    <h2 class="section-title">
+                        <i class="bi bi-person"></i>
+                        প্রোফাইল
+                    </h2>
+                    <div class="section-content">
+                        <div class="profile-info">
+                            <div class="profile-picture">
+                                <i class="bi bi-person-circle"></i>
+                            </div>
+                            <div class="profile-details">
+                                <div class="info-item">
+                                    <span class="label">নাম</span>
+                                    <span class="value" id="userName">এমডি সায়েব</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">ইউজার নেম</span>
+                                    <span class="value" id="userLoginName">mdsayeb7</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Appearance Section -->
+                <section class="settings-section">
+                    <h2 class="section-title">
+                        <i class="bi bi-palette"></i>
+                        অ্যাপের থিম
+                    </h2>
+                    <div class="section-content">
+                        <div class="theme-options">
+                            <div class="theme-option" data-theme="light">
+                                <div class="theme-preview light-theme"></div>
+                                <span>লাইট</span>
+                            </div>
+                            <div class="theme-option" data-theme="dark">
+                                <div class="theme-preview dark-theme"></div>
+                                <span>ডার্ক</span>
+                            </div>
+                            <div class="theme-option" data-theme="system">
+                                <div class="theme-preview system-theme"></div>
+                                <span>সিস্টেম</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Notification Settings -->
+                <section class="settings-section">
+                    <h2 class="section-title">
+                        <i class="bi bi-bell"></i>
+                        নোটিফিকেশন
+                    </h2>
+                    <div class="section-content">
+                        <div class="settings-list">
+                            <div class="settings-item">
+                                <div class="setting-info">
+                                    <span class="setting-title">কাজের রিমাইন্ডার</span>
+                                    <span class="setting-description">কাজ শেষ করার সময় হলে নোটিফিকেশন পাঠান</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="taskReminders" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                            <div class="settings-item">
+                                <div class="setting-info">
+                                    <span class="setting-title">দৈনিক সারসংক্ষেপ</span>
+                                    <span class="setting-description">প্রতিদিন সকালে আজকের কাজের তালিকা দেখান</span>
+                                </div>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="dailyDigest">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Data Management -->
+                <section class="settings-section">
+                    <h2 class="section-title">
+                        <i class="bi bi-database"></i>
+                        ডাটা ব্যবস্থাপনা
+                    </h2>
+                    <div class="section-content">
+                        <div class="data-actions">
+                            <button class="action-btn" onclick="exportData()">
+                                <i class="bi bi-download"></i>
+                                ডাটা এক্সপোর্ট করুন
+                            </button>
+                            <button class="action-btn" onclick="importData()">
+                                <i class="bi bi-upload"></i>
+                                ডাটা ইমপোর্ট করুন
+                            </button>
+                            <button class="action-btn warning" onclick="clearData()">
+                                <i class="bi bi-trash"></i>
+                                সব ডাটা মুছে ফেলুন
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- About Section -->
+                <section class="settings-section">
+                    <h2 class="section-title">
+                        <i class="bi bi-info-circle"></i>
+                        অ্যাপ সম্পর্কে
+                    </h2>
+                    <div class="section-content">
+                        <div class="about-info">
+                            <p class="app-version">ভার্সন ১.০.০</p>
+                            <p class="app-description">
+                                হোমওয়ার্ক ট্র্যাকার একটি সহজ ও কার্যকরী অ্যাপ যা আপনার দৈনিক কাজগুলো
+                                সুন্দরভাবে সাজিয়ে রাখতে সাহায্য করে।
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <nav class="main-nav">
+            <a href="../today/index.html" class="nav-item">
+                <i class="bi bi-calendar-day"></i>
+                <span>আজকে</span>
+            </a>
+            <a href="../incomplete/index.html" class="nav-item">
+                <i class="bi bi-hourglass-split"></i>
+                <span>অসমাপ্ত</span>
+            </a>
+            <a href="../completed/index.html" class="nav-item">
+                <i class="bi bi-check-circle"></i>
+                <span>সমাপ্ত</span>
+            </a>
+            <a href="index.html" class="nav-item active">
+                <i class="bi bi-gear"></i>
+                <span>সেটিংস</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="../../shared/js/utils.js"></script>
+    <script src="../../shared/js/time.js"></script>
+    <script src="../../shared/js/storage.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
