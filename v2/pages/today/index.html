@@ -1,1 +1,86 @@
  
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আজকের কাজ - হোমওয়ার্ক ট্র্যাকার</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../../shared/css/variables.css">
+    <link rel="stylesheet" href="../../shared/css/common.css">
+    <link rel="stylesheet" href="../../shared/css/themes.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header class="main-header">
+            <div class="header-content">
+                <div class="time-display">
+                    <span id="currentDateTime"></span>
+                </div>
+                <div class="user-info">
+                    <i class="bi bi-person-circle"></i>
+                    <span id="userLogin">এমডি সায়েব</span>
+                </div>
+            </div>
+        </header>
+
+        <main id="mainContent">
+            <div class="task-list-container">
+                <div class="task-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">মোট কাজ</span>
+                        <span class="summary-value" id="totalTasks">০</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">বাকি আছে</span>
+                        <span class="summary-value" id="remainingTasks">০</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">শেষ হয়েছে</span>
+                        <span class="summary-value" id="completedTasks">০</span>
+                    </div>
+                </div>
+
+                <div class="task-filters">
+                    <button class="filter-btn active" data-filter="all">সব</button>
+                    <button class="filter-btn" data-filter="pending">বাকি আছে</button>
+                    <button class="filter-btn" data-filter="completed">শেষ হয়েছে</button>
+                </div>
+
+                <div class="tasks" id="taskList">
+                    <!-- Tasks will be inserted here dynamically -->
+                </div>
+            </div>
+        </main>
+
+        <nav class="main-nav">
+            <a href="index.html" class="nav-item active">
+                <i class="bi bi-calendar-day"></i>
+                <span>আজকে</span>
+            </a>
+            <a href="../incomplete/index.html" class="nav-item">
+                <i class="bi bi-hourglass-split"></i>
+                <span>অসমাপ্ত</span>
+            </a>
+            <a href="../completed/index.html" class="nav-item">
+                <i class="bi bi-check-circle"></i>
+                <span>সমাপ্ত</span>
+            </a>
+            <a href="../settings/index.html" class="nav-item">
+                <i class="bi bi-gear"></i>
+                <span>সেটিংস</span>
+            </a>
+        </nav>
+
+        <a href="../add-task/index.html" class="nav-btn">
+            <i class="bi bi-plus-lg"></i>
+        </a>
+    </div>
+
+    <script src="../../shared/js/utils.js"></script>
+    <script src="../../shared/js/time.js"></script>
+    <script src="../../shared/js/storage.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

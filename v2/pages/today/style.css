@@ -1,1 +1,126 @@
  
+.task-list-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.task-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.summary-item {
+    background: var(--nav-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.summary-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.summary-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.task-filters {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    background: var(--nav-bg);
+    padding: 0.5rem;
+    border-radius: 8px;
+}
+
+.filter-btn {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+    color: var(--text-color);
+    cursor: pointer;
+    font-family: 'SolaimanLipi', Arial, sans-serif;
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+.tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.task-item {
+    background: var(--nav-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.task-checkbox {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.task-checkbox.checked {
+    background: var(--primary-color);
+    color: white;
+}
+
+.task-content {
+    flex: 1;
+}
+
+.task-title {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.task-meta {
+    font-size: 0.8rem;
+    color: #666;
+    display: flex;
+    gap: 1rem;
+}
+
+.task-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.task-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-color);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+}
+
+.task-btn:hover {
+    background: var(--shadow-color);
+}
