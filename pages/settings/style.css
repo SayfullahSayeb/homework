@@ -73,6 +73,7 @@
 .theme-option {
     text-align: center;
     cursor: pointer;
+    border: 0.5px solid #666;
 }
 
 .theme-preview {

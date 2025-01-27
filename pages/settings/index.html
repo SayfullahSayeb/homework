@@ -1,6 +1,6 @@
- 
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../../shared/css/themes.css">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div id="app">
         <header class="main-header">
@@ -58,22 +59,25 @@
                         <i class="bi bi-palette"></i>
                         অ্যাপের থিম
                     </h2>
-                    <div class="section-content">
-                        <div class="theme-options">
-                            <div class="theme-option" data-theme="light">
-                                <div class="theme-preview light-theme"></div>
-                                <span>লাইট</span>
-                            </div>
-                            <div class="theme-option" data-theme="dark">
-                                <div class="theme-preview dark-theme"></div>
-                                <span>ডার্ক</span>
-                            </div>
-                            <div class="theme-option" data-theme="system">
-                                <div class="theme-preview system-theme"></div>
-                                <span>সিস্টেম</span>
+                    <div class="settings-container">
+                        <div class="section-content">
+                            <div class="theme-options">
+                                <div class="theme-option" data-theme="light">
+                                    <i class="bi bi-sun-fill theme-icon"></i>
+                                    <span class="theme-label">লাইট মোড</span>
+                                </div>
+                                <div class="theme-option" data-theme="dark">
+                                    <i class="bi bi-moon-fill theme-icon"></i>
+                                    <span class="theme-label">ডার্ক মোড</span>
+                                </div>
+                                <div class="theme-option" data-theme="system">
+                                    <i class="bi bi-display theme-icon"></i>
+                                    <span class="theme-label">সিস্টেম ডিফল্ট</span>
+                                </div>
                             </div>
                         </div>
                     </div>
+
                 </section>
 
                 <!-- Notification Settings -->
@@ -176,4 +180,5 @@
     <script src="../../shared/js/storage.js"></script>
     <script src="script.js"></script>
 </body>
+
 </html>
