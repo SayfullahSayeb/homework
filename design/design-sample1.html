@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <title>হোমওয়ার্ক ম্যানেজমেন্ট সিস্টেম</title>
+    <style>
+        /* Basic styling */
+        body {
+            font-family: 'SolaimanLipi', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f2f5;
+        }
+
+        /* Classes for reusable styles */
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subject {
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .math {
+            background-color: #ff6b6b;
+        }
+
+        .bangla {
+            background-color: #4ecdc4;
+        }
+
+        .english {
+            background-color: #45b7d1;
+        }
+
+        .status-pending {
+            background-color: #ffd93d;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .status-completed {
+            background-color: #6bcb77;
+            padding: 3px 8px;
+            border-radius: 4px;
+            color: white;
+        }
+
+        /* IDs for unique elements */
+        #userPanel {
+            background-color: #4b6584;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        #homeworkContainer {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        #todaysTasks {
+            background-color: #fff;
+            border-left: 5px solid #4b6584;
+        }
+
+        #upcomingTasks {
+            background-color: #fff;
+            border-left: 5px solid #778ca3;
+        }
+
+        #completedTasks {
+            background-color: #fff;
+            border-left: 5px solid #6bcb77;
+        }
+    </style>
+</head>
+<body>
+    <!-- Unique user panel section -->
+    <div id="userPanel">
+        <h2>হোমওয়ার্ক ট্র্যাকার</h2>
+        <p>ব্যবহারকারী: {username}</p>
+        <p>সময়: 2025-01-24 12:39:25</p>
+    </div>
+
+    <!-- Main container for homework -->
+    <div id="homeworkContainer">
+        <!-- Today's Tasks Section -->
+        <div id="todaysTasks" class="card">
+            <h3>আজকের কাজ</h3>
+            
+            <div class="card">
+                <span class="subject math">গণিত</span>
+                <h4>অধ্যায় ৫: বীজগণিত</h4>
+                <p>পৃষ্ঠা ১০২-১০৫ এর অনুশীলনী</p>
+                <span class="status-pending">বাকি আছে</span>
+            </div>
+
+            <div class="card">
+                <span class="subject bangla">বাংলা</span>
+                <h4>কবিতা: বসন্ত</h4>
+                <p>কবিতা মুখস্থ ও ব্যাখ্যা</p>
+                <span class="status-pending">বাকি আছে</span>
+            </div>
+        </div>
+
+        <!-- Upcoming Tasks Section -->
+        <div id="upcomingTasks" class="card">
+            <h3>আগামীকালের কাজ</h3>
+            
+            <div class="card">
+                <span class="subject english">ইংরেজি</span>
+                <h4>Grammar: Tense</h4>
+                <p>Exercise 12 - Page 45</p>
+                <span class="status-pending">বাকি আছে</span>
+            </div>
+        </div>
+
+        <!-- Completed Tasks Section -->
+        <div id="completedTasks" class="card">
+            <h3>সম্পন্ন কাজ</h3>
+            
+            <div class="card">
+                <span class="subject math">গণিত</span>
+                <h4>অধ্যায় ৪: জ্যামিতি</h4>
+                <p>ত্রিভুজের ক্ষেত্রফল</p>
+                <span class="status-completed">সম্পন্ন</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
