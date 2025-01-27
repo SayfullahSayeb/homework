@@ -1,1 +1,139 @@
  
+.summary-card {
+    background: var(--nav-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px var(--shadow-color);
+}
+
+.summary-info {
+    margin-bottom: 1rem;
+}
+
+.summary-label {
+    display: block;
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.summary-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.priority-counts {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.priority-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.priority-high { color: var(--danger-color); }
+.priority-medium { color: var(--secondary-color); }
+.priority-low { color: var(--success-color); }
+
+.sort-options {
+    margin: 1rem 0;
+}
+
+.sort-options select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-color);
+    font-family: 'SolaimanLipi', Arial, sans-serif;
+    font-size: 1rem;
+}
+
+.tasks-by-date {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.date-group {
+    background: var(--nav-bg);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.date-header {
+    padding: 1rem;
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.date-tasks {
+    display: flex;
+    flex-direction: column;
+}
+
+.task-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.task-item:last-child {
+    border-bottom: none;
+}
+
+.priority-indicator {
+    width: 4px;
+    height: 100%;
+    border-radius: 2px;
+}
+
+.priority-indicator.high { background: var(--danger-color); }
+.priority-indicator.medium { background: var(--secondary-color); }
+.priority-indicator.low { background: var(--success-color); }
+
+.task-content {
+    flex: 1;
+}
+
+.task-title {
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.task-meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.task-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.task-btn {
+    border: none;
+    background: transparent;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    color: var(--text-color);
+}
+
+.task-btn:hover {
+    background: var(--shadow-color);
+}
