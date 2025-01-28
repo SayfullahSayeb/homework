@@ -293,76 +293,6 @@ input:checked + .toggle-slider:before {
     line-height: 1.5;
 }
 
-/* Dialog Overlay */
-.dialog-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-.confirm-dialog {
-    background: var(--nav-bg);
-    border-radius: 12px;
-    padding: 1.5rem;
-    width: 90%;
-    max-width: 400px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    animation: dialogSlide 0.3s ease;
-}
-
-.confirm-dialog-title {
-    color: var(--danger-color);
-    font-size: 1.2rem;
-    margin: 0 0 1rem 0;
-    text-align: center;
-}
-
-.confirm-dialog-message {
-    color: var(--text-color);
-    font-size: 1rem;
-    margin: 0 0 1.5rem 0;
-    text-align: center;
-    line-height: 1.5;
-}
-
-.confirm-dialog-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-}
-
-.confirm-btn {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'SolaimanLipi', Arial, sans-serif;
-}
-
-.confirm-btn-cancel {
-    background: var(--bg-color);
-    color: var(--text-color);
-}
-
-.confirm-btn-delete {
-    background: var(--danger-color);
-    color: white;
-}
-
-.confirm-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
-
 /* Toast Notification */
 .toast {
     position: fixed;
@@ -403,27 +333,3 @@ input:checked + .toggle-slider:before {
     }
 }
 
-/* Mobile Optimization */
-@media (max-width: 480px) {
-    .settings-container {
-        padding: 0.8rem;
-    }
-
-    .confirm-dialog {
-        width: 85%;
-        padding: 1.25rem;
-    }
-
-    .confirm-dialog-title {
-        font-size: 1.1rem;
-    }
-
-    .confirm-dialog-message {
-        font-size: 0.9rem;
-    }
-
-    .confirm-btn {
-        padding: 0.6rem 1.2rem;
-        font-size: 0.9rem;
-    }
-}

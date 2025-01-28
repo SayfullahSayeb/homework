@@ -232,3 +232,136 @@ button {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--text-disabled);
 }
+
+/* Dialog Overlay */
+.dialog-overlay {
+    position: fixed;
+    inset: 0; /* Replaces top, right, bottom, left: 0 */
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Confirm Dialog */
+.confirm-dialog {
+    background: var(--nav-bg);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slide-up 0.3s ease;
+}
+
+.confirm-dialog-title {
+    color: var(--danger-color);
+    font-size: var(--text-lg);
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+.confirm-dialog-message {
+    color: var(--text-primary);
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+    font-size: var(--text-md);
+    line-height: 1.5;
+}
+
+.confirm-dialog-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+}
+
+/* Button Styles */
+.confirm-btn {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: 'SolaimanLipi', Arial, sans-serif;
+    font-size: var(--text-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.confirm-btn:active {
+    transform: scale(0.95);
+}
+
+.confirm-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.confirm-btn-cancel {
+    background: var(--border-color);
+    color: var(--text-primary);
+}
+
+.confirm-btn-cancel:hover {
+    background: var(--border-hover);
+}
+
+.confirm-btn-delete {
+    background: var(--danger-color);
+    color: white;
+}
+
+.confirm-btn-delete:hover {
+    background: var(--danger-color-dark);
+}
+
+/* Animation */
+@keyframes slide-up {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 480px) {
+    .confirm-dialog {
+        padding: var(--spacing-md);
+    }
+
+    .confirm-dialog-title {
+        font-size: var(--text-md);
+    }
+
+    .confirm-dialog-message {
+        font-size: var(--text-sm);
+    }
+
+    .confirm-btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: var(--text-sm);
+    }
+
+    .task-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .summary-item:last-child {
+        grid-column: span 2;
+    }
+    
+    .task-title {
+        font-size: var(--text-sm);
+    }
+    
+    .task-meta {
+        font-size: var(--text-xs);
+    }
+    
+    .task-btn {
+        padding: var(--spacing-xs);
+    }
+}
