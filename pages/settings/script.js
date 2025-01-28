@@ -63,13 +63,59 @@ document.getElementById('profileImageInput').addEventListener('change', function
 function editName() {
     const nameElement = document.getElementById('userName');
     const currentName = nameElement.textContent;
-    const newName = prompt('আপনার নাম সম্পাদনা করুন:', currentName);
+    const dialog = document.getElementById('nameEditDialog');
+    const nameInput = document.getElementById('nameInput');
+    
+    // Set current name in input
+    nameInput.value = currentName;
+    
+    // Show dialog
+    dialog.style.display = 'flex';
+    
+    // Focus input
+    nameInput.focus();
+    
+    // Add event listeners
+    nameInput.addEventListener('keyup', handleEnterKey);
+    dialog.addEventListener('click', handleNameDialogOutsideClick);
+}
+
+function handleEnterKey(event) {
+    if (event.key === 'Enter') {
+        saveNewName();
+    }
+}
+
+function handleNameDialogOutsideClick(event) {
+    if (event.target.id === 'nameEditDialog') {
+        closeNameDialog();
+    }
+}
+
+function closeNameDialog() {
+    const dialog = document.getElementById('nameEditDialog');
+    const nameInput = document.getElementById('nameInput');
+    
+    // Remove event listeners
+    nameInput.removeEventListener('keyup', handleEnterKey);
+    dialog.removeEventListener('click', handleNameDialogOutsideClick);
+    
+    // Hide dialog
+    dialog.style.display = 'none';
+}
+
+function saveNewName() {
+    const nameInput = document.getElementById('nameInput');
+    const nameElement = document.getElementById('userName');
+    const newName = nameInput.value;
     
     if (newName && newName.trim()) {
         nameElement.textContent = newName.trim();
         localStorage.setItem('userName', newName.trim());
         showToast('নাম আপডেট করা হয়েছে।');
     }
+    
+    closeNameDialog();
 }
 
 // Default subjects
@@ -81,7 +127,6 @@ const DEFAULT_SUBJECTS = [
     'সামাজিক বিজ্ঞান'
 ];
 
-// Initialize default subjects if none exist
 function initializeDefaultSubjects() {
     const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
     if (subjects.length === 0) {
@@ -89,9 +134,7 @@ function initializeDefaultSubjects() {
     }
 }
 
-// Modify your existing loadSubjects function
 function loadSubjects() {
-    // Initialize default subjects if needed
     initializeDefaultSubjects();
     
     const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
@@ -155,7 +198,6 @@ function handleNotificationChange(event) {
     localStorage.setItem(setting, event.target.checked);
 }
 
-// Data Management
 function exportData() {
     const data = {
         tasks: Storage.getTasks(),
@@ -279,24 +321,44 @@ function clearData() {
 
 // Dialog and Toast Utilities
 function showConfirmDialog(title, message, onConfirm) {
-    const dialog = document.querySelector('.dialog-overlay');
-    const dialogTitle = document.querySelector('.confirm-dialog-title');
-    const dialogMessage = document.querySelector('.confirm-dialog-message');
-    const cancelBtn = document.querySelector('.confirm-btn-cancel');
-    const deleteBtn = document.querySelector('.confirm-btn-delete');
+    const dialog = document.getElementById('clearDataDialog');
+    const dialogTitle = dialog.querySelector('.confirm-dialog-title');
+    const dialogMessage = dialog.querySelector('.confirm-dialog-message');
+    const cancelBtn = dialog.querySelector('.confirm-btn-cancel');
+    const deleteBtn = dialog.querySelector('.confirm-btn-delete');
 
     dialogTitle.textContent = title;
     dialogMessage.textContent = message;
     dialog.style.display = 'flex';
 
-    cancelBtn.onclick = () => {
+    // Remove any existing event listeners
+    const handleCancel = () => {
         dialog.style.display = 'none';
-    }
+        cleanup();
+    };
 
-    deleteBtn.onclick = () => {
+    const handleConfirm = () => {
         dialog.style.display = 'none';
+        cleanup();
         onConfirm();
-    }
+    };
+
+    const handleOutsideClick = (event) => {
+        if (event.target === dialog) {
+            handleCancel();
+        }
+    };
+
+    const cleanup = () => {
+        cancelBtn.removeEventListener('click', handleCancel);
+        deleteBtn.removeEventListener('click', handleConfirm);
+        dialog.removeEventListener('click', handleOutsideClick);
+    };
+
+    // Add new event listeners
+    cancelBtn.addEventListener('click', handleCancel);
+    deleteBtn.addEventListener('click', handleConfirm);
+    dialog.addEventListener('click', handleOutsideClick);
 }
 
 function showToast(message, duration = 3000) {
@@ -309,9 +371,7 @@ function showToast(message, duration = 3000) {
     }, duration);
 }
 
-// Load saved data when page loads
 function loadSavedData() {
-    // Load profile image
     const savedImage = localStorage.getItem('profileImage');
     if (savedImage) {
         const profileImage = document.getElementById('profileImage');
@@ -321,7 +381,6 @@ function loadSavedData() {
         defaultIcon.style.display = 'none';
     }
     
-    // Load name
     const savedName = localStorage.getItem('userName');
     if (savedName) {
         document.getElementById('userName').textContent = savedName;

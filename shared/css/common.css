@@ -314,6 +314,37 @@ button {
     background: var(--danger-color-dark);
 }
 
+/* Name Edit Input Styles */
+.name-edit-input {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-size: var(--text-md);
+    font-family: inherit;
+    margin-bottom: var(--spacing-lg);
+}
+
+.name-edit-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color-light);
+}
+
+
+#nameEditDialog .confirm-dialog-title {
+    color: var(--primary-color); 
+}
+
+#nameEditDialog .confirm-btn-delete {
+    background: var(--primary-color); 
+}
+
+#nameEditDialog .confirm-btn-delete:hover {
+    background: var(--primary-color-dark); 
+}
 /* Animation */
 @keyframes slide-up {
     from {
