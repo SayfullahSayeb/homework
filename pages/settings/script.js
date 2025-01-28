@@ -72,8 +72,28 @@ function editName() {
     }
 }
 
-// Subject Management
+// Default subjects
+const DEFAULT_SUBJECTS = [
+    'বাংলা',
+    'ইংরেজি',
+    'গণিত',
+    'বিজ্ঞান',
+    'সামাজিক বিজ্ঞান'
+];
+
+// Initialize default subjects if none exist
+function initializeDefaultSubjects() {
+    const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+    if (subjects.length === 0) {
+        localStorage.setItem('subjects', JSON.stringify(DEFAULT_SUBJECTS));
+    }
+}
+
+// Modify your existing loadSubjects function
 function loadSubjects() {
+    // Initialize default subjects if needed
+    initializeDefaultSubjects();
+    
     const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
     const subjectList = document.querySelector('.subject-list');
     

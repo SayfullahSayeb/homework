@@ -1,7 +1,27 @@
- 
 let editingTaskId = null;
 
+function loadSubjects() {
+    const subjectSelect = document.getElementById('subject');
+    const subjects = JSON.parse(localStorage.getItem('subjects') || '[]');
+
+    // Clear existing options except the first one
+    while (subjectSelect.options.length > 1) {
+        subjectSelect.remove(1);
+    }
+
+    // Add subjects from storage
+    subjects.forEach(subject => {
+        const option = document.createElement('option');
+        option.value = subject;
+        option.textContent = subject;
+        subjectSelect.appendChild(option);
+    });
+}
+
 function initializeForm() {
+    // Load subjects first
+    loadSubjects();
+
     // Set default date to today
     const today = new Date();
     const dateString = today.toISOString().split('T')[0];
