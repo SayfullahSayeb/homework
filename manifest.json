@@ -1,0 +1,46 @@
+{
+  "name": "হোমওয়ার্ক ট্র্যাকার",
+  "short_name": "হোমওয়ার্ক ট্র্যাকার",
+  "description": "হোমওয়ার্ক ট্র্যাকার",
+  "start_url": "/",
+  "scope": "/",
+  "lang": "en-US",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4CAF50",
+  "dir": "ltr",
+  "orientation": "portrait",
+  "categories": [
+    "education"
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-1.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    },
+    {
+      "src": "screenshot-2.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    },
+    {
+      "src": "screenshot-3.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    },
+    {
+      "src": "screenshot-4.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    }
+  ],
+  "icons": [
+    {
+      "purpose": "any",
+      "sizes": "32x32",
+      "src": "icon.ico",
+      "type": "image/x-icon"
+    }
+  ]
+}
