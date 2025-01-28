@@ -1,3 +1,59 @@
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent Chrome 67 and earlier from automatically showing the prompt
+    e.preventDefault();
+    // Stash the event so it can be triggered later
+    deferredPrompt = e;
+    // Update UI to notify the user they can add to home screen
+    const installButton = document.getElementById('installApp');
+    const installMessage = document.getElementById('installMessage');
+    
+    // Check if app is already installed
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        installButton.style.display = 'none';
+        installMessage.style.display = 'block';
+    } else {
+        installButton.style.display = 'block';
+        installMessage.style.display = 'none';
+    }
+});
+
+// Add event listener for the install button
+document.addEventListener('DOMContentLoaded', () => {
+    const installButton = document.getElementById('installApp');
+    
+    installButton.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            // Show the prompt
+            deferredPrompt.prompt();
+            
+            // Wait for the user to respond to the prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            
+            if (outcome === 'accepted') {
+                showToast('অ্যাপ ইনস্টল করা হচ্ছে...');
+                installButton.style.display = 'none';
+            } else {
+                showToast('অ্যাপ ইনস্টল বাতিল করা হয়েছে।');
+            }
+            
+            // We no longer need the prompt. Clear it up
+            deferredPrompt = null;
+        }
+    });
+});
+
+// Listen for successful installation
+window.addEventListener('appinstalled', (evt) => {
+    // App is installed, update UI
+    const installButton = document.getElementById('installApp');
+    const installMessage = document.getElementById('installMessage');
+    installButton.style.display = 'none';
+    installMessage.style.display = 'block';
+    showToast('অ্যাপ সফলভাবে ইনস্টল করা হয়েছে!');
+});
+
 // Initialize settings when page loads
 document.addEventListener('DOMContentLoaded', () => {
     initializeSettings();
