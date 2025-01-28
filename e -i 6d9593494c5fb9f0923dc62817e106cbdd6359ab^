@@ -1,0 +1,240 @@
+[33mcommit c9590eb724affe6b95ce1c467af5b35635f18818[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 04:34:25 2025 +0600
+
+    hide language option
+
+[33mcommit be955eb4984cc079283f43e47100e9f6dd1dc425[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 04:31:00 2025 +0600
+
+    change possition of settinga item
+
+[33mcommit 740034d2302b90b07fc34d048631e635ee4c4159[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 04:19:18 2025 +0600
+
+    combines event listeners
+
+[33mcommit be9b7319ac49dae49b16ba983bd74f284041264f[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 04:15:19 2025 +0600
+
+    optimize the install button functionality
+
+[33mcommit 4f16d4cf9e40a87eaae71ffd9e1dc75a288b5c34[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 04:06:41 2025 +0600
+
+    Shows install button when installation is possible
+
+[33mcommit 17e9eeb1f713f1488353deea082ffbe6184ad4ab[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:56:34 2025 +0600
+
+    Removed dependency on localStorage for installation state
+
+[33mcommit adab17a023179360c87e8931228eab7d26f54cfe[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:47:16 2025 +0600
+
+    test pwa install
+
+[33mcommit fd193952be778406244b21f9f3bcccd0d3922b83[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:36:38 2025 +0600
+
+    test pwa install
+
+[33mcommit 9701cc4b78e35ffc90d93ff7e308fb20bdd3d92e[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:28:45 2025 +0600
+
+    test insall app setting menu
+
+[33mcommit 7e0d15b3558ee5b9d5659a35e0460c02ed1a9173[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:21:52 2025 +0600
+
+    fixed other pages path
+
+[33mcommit 55fc9bb9b0c777b65d9af4fad57ab82b7c038198[m
+Merge: 07bf6bb 29bfdc3
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:19:53 2025 +0600
+
+    Merge branch 'main' of https://github.com/mdsayeb7/homework
+
+[33mcommit 07bf6bb81d508ff517886019054c24bcdb671ac7[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:19:50 2025 +0600
+
+    check path is working or not
+
+[33mcommit 29bfdc3464355a6f65ea8dfa781aa8146ce46b28[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:15:52 2025 +0600
+
+    Create CNAME
+
+[33mcommit 6d9593494c5fb9f0923dc62817e106cbdd6359ab[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:14:03 2025 +0600
+
+    fixed path some path
+
+[33mcommit b608c3a47e299045d075639ddf83e05159f06fdd[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:09:49 2025 +0600
+
+    fixed pwa issues
+
+[33mcommit b9cf75f7b2cb86603cc6b2a1ff70b0217c14becd[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 03:04:40 2025 +0600
+
+    add pwa funtion
+
+[33mcommit 2a5dfbe32da595cca8da9e5f344d014c8ee0af54[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 02:47:04 2025 +0600
+
+    added site icon
+
+[33mcommit 53543fae5324d0782fb8eab5054dd4acb4668b68[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 02:38:27 2025 +0600
+
+    fixed name edit popup issue
+
+[33mcommit e5c8db75f47f9a27ca69a2f9250116f47aa2c52b[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 02:10:32 2025 +0600
+
+    optimize common css
+
+[33mcommit ab81f6361222ef00e1d551a3c52d14270bc0f592[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 01:16:47 2025 +0600
+
+    subject adding issue fixed
+
+[33mcommit 572f23747b67d55c49953bf8d2fd5b24f98fb946[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 00:49:13 2025 +0600
+
+    fixed some issue
+
+[33mcommit 9964102fccd0e7d1026dcddde6b72318379c322b[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 00:31:46 2025 +0600
+
+    fixed showing username on today page
+
+[33mcommit f084d0ac51cff343654833e2010bdc8ab95b57c5[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Wed Jan 29 00:26:46 2025 +0600
+
+    😋
+
+[33mcommit d29b88411759a6f57f18562a93bfe75de1ee1805[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Tue Jan 28 23:46:46 2025 +0600
+
+    💥
+
+[33mcommit e29588da1772225dfc35cc9ab8d6175a27c4456b[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Tue Jan 28 01:01:05 2025 +0600
+
+    test
+
+[33mcommit 4667010dc278fd7878947469b79d182b09f404df[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 22:53:43 2025 +0600
+
+    🤡
+
+[33mcommit baf63a5b331a5ddd60bf2d89836342d3f93f5a18[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 22:47:11 2025 +0600
+
+    📖
+
+[33mcommit 9a2b73136eeaa675654e25c7ad6d03b20bc9dfdf[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 22:14:58 2025 +0600
+
+    😓
+
+[33mcommit 9472b50b2f46691aa33e68efdd1342fe67802a72[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 21:39:41 2025 +0600
+
+    😒
+
+[33mcommit 7b344e30cc6cb088ea32ee0f67905c22a3c10649[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 21:28:26 2025 +0600
+
+    🤯
+
+[33mcommit 057d556e83e8821d72d8699f2235e247b9f7d871[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 21:11:18 2025 +0600
+
+    📸
+
+[33mcommit b9c33fd3782c6f1ce0a36fdb5d8c23b52e5171f6[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 21:06:06 2025 +0600
+
+    😁
+
+[33mcommit 06fe8b6b0fef007cdafefba750c90f9ddb99d9e5[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 20:37:30 2025 +0600
+
+    rename
+
+[33mcommit 042553ae36d52d79fe0068d52d57dc21645edcbc[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 20:34:02 2025 +0600
+
+    updated
+
+[33mcommit 50dac86a27ac7304c87e51d85325bdd68b0e5ced[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 20:07:47 2025 +0600
+
+    updated file structure
+
+[33mcommit f0ec2a4b159af7d50734794ded40933dc63b21fb[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Mon Jan 27 19:43:21 2025 +0600
+
+    .
+
+[33mcommit 46cca6f601cf30197a7cc71d543755b23dffafae[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Sun Jan 26 05:50:20 2025 +0600
+
+    test
+
+[33mcommit f699d3dd0499c27ddc4fada937faf87901ec90f1[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Sun Jan 26 05:40:49 2025 +0600
+
+    save progress
+
+[33mcommit 12297cdbeb6c94804fbdfe0815cc267c7d3ad4b7[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Sun Jan 26 04:15:14 2025 +0600
+
+    updated
+
+[33mcommit 78d8b569be3ce7f9eb9046caaee35d9c7c13cc04[m
+Author: Sayfullah Sayeb <sayfullah.sayeb@gmail.com>
+Date:   Sun Jan 26 03:00:02 2025 +0600
+
+    Initial commit
