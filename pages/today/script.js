@@ -12,7 +12,7 @@ function updateTaskSummary() {
     const tasks = Storage.getTasks();
     const completed = tasks.filter(t => t.completed).length;
     const total = tasks.length;
-    
+
     document.getElementById('totalTasks').textContent = toBanglaNumber(total.toString());
     document.getElementById('completedTasks').textContent = toBanglaNumber(completed.toString());
     document.getElementById('remainingTasks').textContent = toBanglaNumber((total - completed).toString());
@@ -46,7 +46,7 @@ function createTaskElement(task) {
 function renderTasks() {
     const taskList = document.getElementById('taskList');
     taskList.innerHTML = '';
-    
+
     const tasks = Storage.getTasks();
     const filteredTasks = tasks.filter(task => {
         if (currentFilter === 'completed') return task.completed;
@@ -128,7 +128,7 @@ function showToast(message, type = 'info') {
     toast.className = `toast toast-${type}`;
     toast.textContent = message;
     document.body.appendChild(toast);
-    
+
     setTimeout(() => {
         toast.classList.add('show');
         setTimeout(() => {
@@ -138,9 +138,7 @@ function showToast(message, type = 'info') {
     }, 100);
 }
 
-// Event Listeners
-document.addEventListener('DOMContentLoaded', () => {
-    renderTasks();
+
 
     // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -153,8 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-document.addEventListener('DOMContentLoaded', () => {
-    const userName = localStorage.getItem('userName') || '';
-    document.getElementById('userLogin').textContent = userName;
+    document.addEventListener('DOMContentLoaded', () => {
+        renderTasks();
+        const userName = localStorage.getItem('userName') || '';
+        document.getElementById('userLogin').textContent = userName;
 
-})});
+    });
