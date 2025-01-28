@@ -1,22 +1,16 @@
 let deferredPrompt;
 
+// Function to update install UI
 function updateInstallUI() {
     const installButton = document.getElementById('installApp');
     const installMessage = document.getElementById('installMessage');
     
-    // Check if running as standalone PWA
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
-
-    if (isStandalone) {
-        // App is running as PWA - show message
-        installButton.style.display = 'none';
-        installMessage.style.display = 'block';
-    } else if (deferredPrompt) {
-        // Can be installed - show button
+    if (deferredPrompt) {
+        // Can be installed - show button, hide message
         installButton.style.display = 'block';
         installMessage.style.display = 'none';
     } else {
-        // Can't be installed - show message
+        // Can't be installed - hide button, show message
         installButton.style.display = 'none';
         installMessage.style.display = 'block';
     }
@@ -35,14 +29,16 @@ document.getElementById('installApp').addEventListener('click', async () => {
     
     try {
         await deferredPrompt.prompt();
-        const result = await deferredPrompt.userChoice;
-        if (result.outcome === 'accepted') {
-            showToast('অ্যাপ ইনস্টল করা হচ্ছে...');
-        }
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        updateInstallUI();
     } catch (error) {
         console.error('Installation error:', error);
     }
-    
+});
+
+// Listen for successful installation
+window.addEventListener('appinstalled', () => {
     deferredPrompt = null;
     updateInstallUI();
 });
