@@ -44,14 +44,13 @@ window.addEventListener('appinstalled', () => {
 });
 
 // Initial UI update
-document.addEventListener('DOMContentLoaded', updateInstallUI);
-
-// Initialize settings when page loads
 document.addEventListener('DOMContentLoaded', () => {
+    updateInstallUI();
     initializeSettings();
     loadSubjects();
     loadSavedData();
 });
+
 
 function initializeSettings() {
     // Initialize dark mode toggle
