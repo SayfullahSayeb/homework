@@ -80,7 +80,7 @@
     <script src="shared/js/time.js"></script>
     <script src="shared/js/storage.js"></script>
     <script>
-        const settings = Storage.getSettings?.(); // Optional chaining for safety
+        const settings = Storage.getSettings?.();
         document.body.setAttribute('data-theme', settings?.theme || 'light');
 
         document.addEventListener('DOMContentLoaded', () => {
