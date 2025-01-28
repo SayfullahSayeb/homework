@@ -15,22 +15,22 @@
   ],
   "screenshots": [
     {
-      "src": "screenshot-1.png",
+      "src": "/assets/images/screenshot-1.png",
       "sizes": "1280x720",
       "type": "image/png"
     },
     {
-      "src": "screenshot-2.png",
+      "src": "/assets/images/screenshot-2.png",
       "sizes": "1280x720",
       "type": "image/png"
     },
     {
-      "src": "screenshot-3.png",
+      "src": "/assets/images/screenshot-3.png",
       "sizes": "1280x720",
       "type": "image/png"
     },
     {
-      "src": "screenshot-4.png",
+      "src": "/assets/images/screenshot-4.png",
       "sizes": "1280x720",
       "type": "image/png"
     }
@@ -38,9 +38,9 @@
   "icons": [
     {
       "purpose": "any",
-      "sizes": "32x32",
-      "src": "icon.ico",
-      "type": "image/x-icon"
+      "sizes": "512x512",
+      "src": "/assets/icons/icon.png",
+      "type": "image/png"
     }
   ]
 }
