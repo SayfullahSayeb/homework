@@ -232,3 +232,9 @@ document.addEventListener('DOMContentLoaded', () => {
     populateSubjectFilter();
     filterTasks();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const userName = localStorage.getItem('userName') || '';
+    document.getElementById('userLogin').textContent = userName;
+
+});

@@ -10,8 +10,7 @@ const Storage = {
     defaults: {
         settings: {
             theme: 'system',
-            userName: 'এমডি সায়েব',  // Added default user name
-            lastUpdated: '2025-01-27 15:57:00'
+            userName: '',  
         },
         subjects: [  // Added default subjects
             'বাংলা',

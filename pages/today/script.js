@@ -152,18 +152,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Update time display
-    const timeDisplay = document.getElementById('currentDateTime');
-    if (timeDisplay) {
-        function updateTime() {
-            const now = new Date();
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const date = now.toLocaleDateString('bn-BD', options);
-            const hours = now.getHours();
-            const minutes = now.getMinutes();
-            timeDisplay.textContent = `আজ ${date} | সময় ${toBanglaNumber(hours)}:${toBanglaNumber(minutes.toString().padStart(2, '0'))}`;
-        }
-        updateTime();
-        setInterval(updateTime, 60000); // Update every minute
-    }
-});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const userName = localStorage.getItem('userName') || '';
+    document.getElementById('userLogin').textContent = userName;
+
+})});

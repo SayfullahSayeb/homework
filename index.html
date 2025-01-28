@@ -38,6 +38,9 @@
         }
 
         .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
             margin-top: 1rem;
             color: var(--text-secondary);
             font-size: 0.9rem;
@@ -79,8 +82,8 @@
         document.body.setAttribute('data-theme', settings?.theme || 'light');
 
         document.addEventListener('DOMContentLoaded', () => {
-            const userName = localStorage.getItem('userName') ?? 'username';
-            document.getElementById('currentUser').textContent = userName;
+            const userName = localStorage.getItem('userName') ?? '';
+            document.getElementById('currentUser').textContent = `হাই, ${userName}`;
 
             function updateTime() {
                 const timeDisplay = document.getElementById('currentTime');

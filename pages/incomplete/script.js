@@ -154,3 +154,9 @@ function deleteTask(taskId) {
 
 // Initialize when page loads
 document.addEventListener('DOMContentLoaded', renderTasks);
+
+document.addEventListener('DOMContentLoaded', () => {
+    const userName = localStorage.getItem('userName') || '';
+    document.getElementById('userLogin').textContent = userName;
+
+});
