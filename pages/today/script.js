@@ -138,7 +138,9 @@ function showToast(message, type = 'info') {
     }, 100);
 }
 
-
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    renderTasks();
 
     // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -149,11 +151,4 @@ function showToast(message, type = 'info') {
             renderTasks();
         });
     });
-
-
-    document.addEventListener('DOMContentLoaded', () => {
-        renderTasks();
-        const userName = localStorage.getItem('userName') || '';
-        document.getElementById('userLogin').textContent = userName;
-
-    });
+}); 

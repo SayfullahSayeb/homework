@@ -29,6 +29,13 @@ body {
     flex-direction: column;
 }
 
+.user-info .profile-pic {
+    width: 24px;  /* or your preferred size */
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
+} 
+
 /* Header Styles */
 .main-header {
     background: var(--nav-bg);

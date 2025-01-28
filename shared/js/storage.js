@@ -170,3 +170,22 @@ const Storage = {
         this.saveSettings(settings);
     }
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    const userName = localStorage.getItem('userName') || '';
+    document.getElementById('userLogin').textContent = userName;
+
+    // Handle profile picture
+    const headerProfileImage = document.getElementById('headerProfileImage');
+    const headerDefaultIcon = document.getElementById('headerDefaultIcon');
+    const savedProfileImage = localStorage.getItem('profileImage');
+
+    if (savedProfileImage) {
+        headerProfileImage.src = savedProfileImage;
+        headerProfileImage.style.display = 'inline-block';
+        headerDefaultIcon.style.display = 'none';
+    } else {
+        headerProfileImage.style.display = 'none';
+        headerDefaultIcon.style.display = 'inline-block';
+    }
+});
