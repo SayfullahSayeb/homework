@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="bn">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,11 +44,15 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes fade-out {
-            to { opacity: 0; }
+            to {
+                opacity: 0;
+            }
         }
 
         .fade-out {
@@ -55,12 +60,13 @@
         }
     </style>
 </head>
+
 <body>
-    <div class="loading-screen">
-        <div class="app-logo">হোমওয়ার্ক ট্র্যাকার</div>
-        <div class="loading-spinner"></div>
+    <div class="loading-screen" role="status" aria-live="polite">
+        <div class="app-logo" aria-hidden="true">হোমওয়ার্ক ট্র্যাকার</div>
+        <div class="loading-spinner" aria-label="Loading"></div>
         <div class="user-info">
-            <span id="currentUser">মোঃ সায়েব</span>
+            <span id="currentUser"></span>
             <span id="currentTime"></span>
         </div>
     </div>
@@ -69,38 +75,34 @@
     <script src="shared/js/time.js"></script>
     <script src="shared/js/storage.js"></script>
     <script>
-        // Initialize app state
-        const currentUser = Storage.getUser();
-        const settings = Storage.getSettings();
+        const settings = Storage.getSettings?.(); // Optional chaining for safety
+        document.body.setAttribute('data-theme', settings?.theme || 'light');
 
-        // Apply theme
-        document.body.setAttribute('data-theme', settings.theme);
-
-        // Update time display
-        function updateTime() {
-            const timeDisplay = document.getElementById('currentTime');
-            if (timeDisplay) {
-                timeDisplay.textContent = TimeUtils.formatDateTime(new Date());
-            }
-        }
-
-        // Initialize app
         document.addEventListener('DOMContentLoaded', () => {
-            // Update time initially and start interval
-            updateTime();
-            setInterval(updateTime, 60000);
+            const userName = localStorage.getItem('userName') ?? 'username';
+            document.getElementById('currentUser').textContent = userName;
 
-            // Redirect after a short delay
+            function updateTime() {
+                const timeDisplay = document.getElementById('currentTime');
+                if (timeDisplay && TimeUtils?.formatDateTime) {
+                    timeDisplay.textContent = TimeUtils.formatDateTime(new Date());
+                }
+            }
+
+            updateTime();
+            setInterval(updateTime, 1000);
+
             setTimeout(() => {
                 const loadingScreen = document.querySelector('.loading-screen');
-                loadingScreen.classList.add('fade-out');
-                
-                // Redirect to today's tasks page
-                setTimeout(() => {
-                    window.location.href = '/pages/today/index.html';
-                }, 300);
+                if (loadingScreen) {
+                    loadingScreen.classList.add('fade-out');
+                    setTimeout(() => {
+                        window.location.href = 'pages/today/index.html';
+                    }, 300);
+                }
             }, 1500);
         });
     </script>
 </body>
+
 </html>
