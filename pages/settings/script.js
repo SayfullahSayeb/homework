@@ -9,22 +9,28 @@ function updateInstallUI() {
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
                         navigator.standalone || 
                         document.referrer.includes('android-app://');
-                        
-    // Check if previously installed
-    const isInstalled = localStorage.getItem('pwaInstalled') === 'true' || isStandalone;
 
-    if (isInstalled) {
-        // App is installed - hide button, show message
+    if (isStandalone) {
+        // Currently running as PWA
         installButton.style.display = 'none';
         installMessage.style.display = 'block';
+        localStorage.setItem('pwaInstalled', 'true');
     } else if (deferredPrompt) {
-        // Can be installed - show button, hide message
+        // Can be installed
         installButton.style.display = 'block';
         installMessage.style.display = 'none';
+        localStorage.removeItem('pwaInstalled'); // Clear installed state
     } else {
-        // Either installed or can't be installed - hide button, show message
-        installButton.style.display = 'none';
-        installMessage.style.display = 'block';
+        // Check if browser supports installation
+        if ('serviceWorker' in navigator && 'standalone' in navigator) {
+            // Modern browser that supports PWA
+            installButton.style.display = 'none';
+            installMessage.style.display = 'block';
+        } else {
+            // Browser doesn't support PWA installation
+            installButton.style.display = 'none';
+            installMessage.style.display = 'none';
+        }
     }
 }
 
@@ -32,12 +38,12 @@ function updateInstallUI() {
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
+    localStorage.removeItem('pwaInstalled'); // Clear any previous installation state
     updateInstallUI();
 });
 
 // Listen for successful installation
 window.addEventListener('appinstalled', () => {
-    localStorage.setItem('pwaInstalled', 'true');
     deferredPrompt = null;
     updateInstallUI();
     showToast('অ্যাপ সফলভাবে ইনস্টল করা হয়েছে!');
@@ -54,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await deferredPrompt.prompt();
             if (result?.outcome === 'accepted') {
                 showToast('অ্যাপ ইনস্টল করা হচ্ছে...');
-                localStorage.setItem('pwaInstalled', 'true');
             }
         } catch (error) {
             console.error('Installation error:', error);
@@ -71,20 +76,18 @@ document.addEventListener('DOMContentLoaded', () => {
 // Check installation status when page becomes visible
 document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
+        // If page is not in standalone mode, allow reinstallation
+        if (!window.matchMedia('(display-mode: standalone)').matches) {
+            localStorage.removeItem('pwaInstalled');
+        }
         updateInstallUI();
     }
 });
 
-function showToast(message, duration = 3000) {
-    const toast = document.querySelector('.toast');
-    if (toast) {
-        toast.textContent = message;
-        toast.style.display = 'block';
-        setTimeout(() => {
-            toast.style.display = 'none';
-        }, duration);
-    }
-}
+// Monitor display mode changes
+window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
+    updateInstallUI();
+});
 
 // Initialize settings when page loads
 document.addEventListener('DOMContentLoaded', () => {
