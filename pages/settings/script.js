@@ -1,3 +1,31 @@
+// Function to check if the app is installed
+function isAppInstalled() {
+    return window.matchMedia('(display-mode: standalone)').matches || 
+           window.navigator.standalone || // For iOS
+           document.referrer.includes('android-app://'); // For Android
+}
+
+// Function to update install UI
+function updateInstallUI() {
+    const installButton = document.getElementById('installApp');
+    const installMessage = document.getElementById('installMessage');
+    
+    if (isAppInstalled()) {
+        // App is installed
+        installButton.style.display = 'none';
+        installMessage.style.display = 'block';
+        localStorage.setItem('appInstalled', 'true');
+    } else if (deferredPrompt) {
+        // App can be installed
+        installButton.style.display = 'block';
+        installMessage.style.display = 'none';
+    } else {
+        // App cannot be installed or is running in browser
+        installButton.style.display = 'none';
+        installMessage.style.display = 'none';
+    }
+}
+
 let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {
@@ -5,22 +33,14 @@ window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     // Stash the event so it can be triggered later
     deferredPrompt = e;
-    // Update UI to notify the user they can add to home screen
-    const installButton = document.getElementById('installApp');
-    const installMessage = document.getElementById('installMessage');
-    
-    // Check if app is already installed
-    if (window.matchMedia('(display-mode: standalone)').matches) {
-        installButton.style.display = 'none';
-        installMessage.style.display = 'block';
-    } else {
-        installButton.style.display = 'block';
-        installMessage.style.display = 'none';
-    }
+    // Update UI
+    updateInstallUI();
 });
 
-// Add event listener for the install button
+// Check installation status when page loads
 document.addEventListener('DOMContentLoaded', () => {
+    updateInstallUI();
+    
     const installButton = document.getElementById('installApp');
     
     installButton.addEventListener('click', async () => {
@@ -28,20 +48,44 @@ document.addEventListener('DOMContentLoaded', () => {
             // Show the prompt
             deferredPrompt.prompt();
             
-            // Wait for the user to respond to the prompt
-            const { outcome } = await deferredPrompt.userChoice;
-            
-            if (outcome === 'accepted') {
-                showToast('অ্যাপ ইনস্টল করা হচ্ছে...');
-                installButton.style.display = 'none';
-            } else {
-                showToast('অ্যাপ ইনস্টল বাতিল করা হয়েছে।');
+            try {
+                // Wait for the user to respond to the prompt
+                const { outcome } = await deferredPrompt.userChoice;
+                
+                if (outcome === 'accepted') {
+                    showToast('অ্যাপ ইনস্টল করা হচ্ছে...');
+                    localStorage.setItem('appInstalled', 'true');
+                } else {
+                    showToast('অ্যাপ ইনস্টল বাতিল করা হয়েছে।');
+                }
+            } catch (err) {
+                console.error('Installation error:', err);
             }
             
             // We no longer need the prompt. Clear it up
             deferredPrompt = null;
+            updateInstallUI();
         }
     });
+});
+
+// Listen for successful installation
+window.addEventListener('appinstalled', (evt) => {
+    localStorage.setItem('appInstalled', 'true');
+    updateInstallUI();
+    showToast('অ্যাপ সফলভাবে ইনস্টল করা হয়েছে!');
+});
+
+// Check for display mode changes
+window.matchMedia('(display-mode: standalone)').addEventListener('change', (evt) => {
+    updateInstallUI();
+});
+
+// Additional check when the page becomes visible
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+        updateInstallUI();
+    }
 });
 
 // Listen for successful installation
